@@ -1,0 +1,148 @@
+/* FileUpload */
+.file-uploader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+}
+
+.file-uploader:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.file-uploader h2 {
+    font-size: 1.75rem;
+    color: #333;
+    text-align: center;
+    font-weight: 600;
+}
+
+.file-uploader input[type='file'] {
+    display: block;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    border: 2px dashed #007bff;
+    border-radius: 8px;
+    width: 100%;
+    text-align: center;
+    background-color: #f7f7f7;
+    color: #007bff;
+    transition:
+        background-color 0.3s,
+        border-color 0.3s;
+}
+
+.file-uploader input[type='file']:hover {
+    background-color: #e6f0ff;
+    border-color: #0056b3;
+}
+
+.save-image {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 0.5rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition:
+        background-color 0.3s,
+        box-shadow 0.3s;
+    width: 100%;
+}
+
+.file-uploader button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.file-uploader img {
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    max-width: 120px;
+    max-height: 120px;
+    object-fit: cover;
+}
+
+/* PostDetails */
+.post-settings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 500px;
+    margin: 15px auto;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+}
+
+.post-settings h2 {
+    font-size: 1.75rem;
+    color: #333;
+    text-align: center;
+    font-weight: 600;
+}
+
+.post-settings label {
+    margin-bottom: 0.5rem;
+    color: #333;
+    display: block;
+}
+
+.post-settings textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    box-sizing: border-box;
+    min-height: 90px; /* Ensure a minimum height for the textarea */
+    resize: vertical; /* Allow vertical resizing */
+}
+
+.post-settings input[type='date'] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    box-sizing: border-box;
+}
+
+.post-settings select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    box-sizing: border-box;
+}
+
+.post-settings button {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 0.5rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition:
+        background-color 0.3s,
+        box-shadow 0.3s;
+    width: 100%;
+}
+
+.post-settings button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
