@@ -18,7 +18,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-const port = 8080;
+const port = 10000;
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
