@@ -11,12 +11,8 @@ const { TOP_POST_LIKES_THRESHOLD, HOSTNAME } = require('./constants');
 
 const app = express();
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
-const corsOptions = {
-    origin: HOSTNAME,
-};
-
-app.use(cors(corsOptions));
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 const port = 10000;
 
