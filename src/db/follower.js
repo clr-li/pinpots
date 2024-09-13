@@ -1,34 +1,34 @@
 // Filename - follower.js
-const mongoose = require('mongoose');
-require('dotenv').config();
+const mongoose = require("mongoose");
+require("dotenv").config();
 const mongoPassword = process.env.MONGODB_PASSWORD;
-const uri = `mongodb+srv://pinpots:${mongoPassword}@pinpotscluster0.ch5rq.mongodb.net/pinpots-db?retryWrites=true&w=majority&appName=PinpotsCluster0`;
+const uri = `mongodb+srv://pinpots:${mongoPassword}@cluster0.ch5rq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 mongoose
-    .connect(uri)
-    .then(() => {})
-    .catch(e => {
-        console.log('Connection error:', e);
-    });
+  .connect(uri)
+  .then(() => {})
+  .catch((e) => {
+    console.log("Connection error:", e);
+  });
 
 const followerSchema = new mongoose.Schema(
-    {
-        followerId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'users',
-            required: true,
-        },
-        followedId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'users',
-            required: true,
-        },
+  {
+    followerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+      required: true,
     },
-    {
-        collection: 'follower',
+    followedId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+      required: true,
     },
+  },
+  {
+    collection: "follower",
+  }
 );
 
-const UserRelation = mongoose.model('follower', followerSchema);
+const UserRelation = mongoose.model("follower", followerSchema);
 
 module.exports = UserRelation;
