@@ -3,7 +3,7 @@ import { Routers } from './Routes';
 import './index.css';
 
 function App() {
-    return <Routers />;
+  return <Routers />;
 }
 
 export default App;

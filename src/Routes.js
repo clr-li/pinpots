@@ -8,17 +8,17 @@ import SearchPage from './pages/search';
 import ExplorePage from './pages/explore';
 
 export const Routers = () => {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/explore.html" element={<ExplorePage />} />
-                <Route path="/mymap.html" element={<MapPage />} />
-                <Route path="/signup.html" element={<SignupPage />} />
-                <Route path="/post.html" element={<Upload />} />
-                <Route path="/login.html" element={<LoginPage />} />
-                <Route path="/search.html" element={<SearchPage />} />
-            </Routes>
-        </Router>
-    );
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/explore.html" element={<ExplorePage />} />
+        <Route path="/mymap.html" element={<MapPage />} />
+        <Route path="/signup.html" element={<SignupPage />} />
+        <Route path="/post.html" element={<Upload />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/search.html" element={<SearchPage />} />
+      </Routes>
+    </Router>
+  );
 };

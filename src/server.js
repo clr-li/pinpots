@@ -1,3 +1,4 @@
+'use strict';
 const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
@@ -7,20 +8,26 @@ connectDB();
 const userCol = require('./db/user');
 const postsCol = require('./db/posts');
 const followCol = require('./db/follower');
+const path = require('path');
 const levenshtein = require('js-levenshtein');
 require('dotenv').config();
 const { TOP_POST_LIKES_THRESHOLD } = require('./constants');
 
 const app = express();
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(express.static(path.join(__dirname, '../build')));
 
 const PORT = process.env.PORT || 8080;
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
 //TODO: HIGH PRIORITY - require authentication for endpoints
+
+// ========== ROUTES ==========
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
 
 // Helper function to generate JWT
 function generateToken(user) {
@@ -34,7 +41,7 @@ app.get('/testendpoint', (req, res) => {
 });
 
 // Login route
-app.post('/login', async (req, res) => {
+app.post('/login-user', async (req, res) => {
   const { username, password } = req.body;
 
   try {
