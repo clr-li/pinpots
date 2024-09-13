@@ -22,14 +22,13 @@ function FileUploader(props) {
     }
   }, []);
 
+  // TODO: when location is changed, image doesn't post
   async function convertToBase64(e) {
     let file = e.target.files[0];
     if (file) {
       try {
         const base64Image = await fileToBase64(file);
-        console.log('base64', base64Image);
         const resizedImage = await resizeBase64Image(base64Image, file.size);
-        console.log('resized', resizedImage);
         setImage(resizedImage);
 
         // Automatically save the image and location after processing

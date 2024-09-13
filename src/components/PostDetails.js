@@ -49,13 +49,11 @@ function PostDetails(props) {
       postData.text = caption; // Only include caption if it's not empty
     }
 
-    console.log('postdata', postData);
     if (postData.visibility === postVisibility.PUBLIC && postImage.location.type === 'house') {
       setMessage({ text: 'Cannot post public images of houses', type: 'error' });
     } else {
       try {
         const response = await axios.post(`${HOSTNAME}/upload-post/`, postData);
-        console.log(response);
 
         if (response.status === 201) {
           setMessage({ text: 'Posted successfully!', type: 'success' });
@@ -63,7 +61,6 @@ function PostDetails(props) {
           setMessage({ text: 'Failed to post.', type: 'error' });
         }
       } catch (error) {
-        console.log(error);
         setMessage({ text: 'Error posting.', type: 'error' });
       }
     }
