@@ -9,15 +9,11 @@ const postsCol = require('./db/posts');
 const followCol = require('./db/follower');
 const levenshtein = require('js-levenshtein');
 require('dotenv').config();
-const { TOP_POST_LIKES_THRESHOLD, HOSTNAME } = require('./constants');
+const { TOP_POST_LIKES_THRESHOLD } = require('./constants');
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// const corsOptions = {
-//   origin: HOSTNAME,
-// };
-
 app.use(cors());
 
 const PORT = process.env.PORT || 8080;

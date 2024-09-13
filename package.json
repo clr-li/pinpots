@@ -34,7 +34,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"react-dotenv\" \"nodemon server.js\" \"react-scripts start\"",
+    "start": "react-dotenv && nodemon server.js && react-scripts start",
     "build": "npm install && react-dotenv && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -67,7 +67,6 @@
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.12",
-    "concurrently": "^9.0.1",
     "nodemon": "^3.1.4",
     "prettier": "3.3.3"
   }
