@@ -8,27 +8,25 @@ import PostDetails from '../components/PostDetails';
 import '../styles/map.css';
 
 function PostPage() {
-    const [selectPosition, setSelectPosition] = useState(null);
-    const [postImage, setPostImage] = useState(null);
+  const [selectPosition, setSelectPosition] = useState(null);
+  const [postImage, setPostImage] = useState(null);
 
-    return (
-        <React.StrictMode>
-            <Navbar />
-            <div className="half-half-containter">
-                <div className="half-container">
-                    <Maps selectPosition={selectPosition} />
-                </div>
-                <div className="half-container">
-                    <SearchBox
-                        selectPosition={selectPosition}
-                        setSelectPosition={setSelectPosition}
-                    />
-                    <FileUploader selectPosition={selectPosition} setPostImage={setPostImage} />
-                    <PostDetails postImage={postImage} />
-                </div>
-            </div>
-        </React.StrictMode>
-    );
+  return (
+    <React.StrictMode>
+      <Navbar />
+      <div className="half-half-containter">
+        <div className="half-container">
+          <Maps selectPosition={selectPosition} />
+        </div>
+        <div className="half-container">
+          <h2>1. Search and Select a Location</h2>
+          <SearchBox selectPosition={selectPosition} setSelectPosition={setSelectPosition} />
+          <FileUploader selectPosition={selectPosition} setPostImage={setPostImage} />
+          <PostDetails postImage={postImage} />
+        </div>
+      </div>
+    </React.StrictMode>
+  );
 }
 
 export default PostPage;
