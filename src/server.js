@@ -26,11 +26,27 @@ const JWT_SECRET = process.env.JWT_SECRET;
 //TODO: HIGH PRIORITY - require authentication for endpoints
 
 // ========== ROUTES ==========
-app.get('/login.html', (req, res) => {
+app.get('/explore.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
+
+app.get('/mymap.html', (req, res) => {
   res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
 app.get('/signup.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
+
+app.get('/post.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
+
+app.get('/login.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
+
+app.get('/search.html', (req, res) => {
   res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
@@ -48,7 +64,6 @@ app.get('/testendpoint', (req, res) => {
 // Login route
 app.post('/login-user', async (req, res) => {
   const { username, password } = req.body;
-  console.log('hello', username, password);
 
   try {
     const user = await userCol.findOne({ username: username });
@@ -57,9 +72,10 @@ app.post('/login-user', async (req, res) => {
       const token = generateToken(user);
       res.status(200).json({ token });
     } else {
-      res.status(400).json({ password: password, user_password: user.password });
+      res.status(400).json({ error: 'Invalid username or password' });
     }
   } catch (e) {
+    console.log('login-user error: ', e);
     res.status(500).json({ error: e });
   }
 });
@@ -118,7 +134,8 @@ app.post('/upload-post', async (req, res) => {
     });
     res.status(201).json('success');
   } catch (e) {
-    res.send({ Status: 'error', data: e });
+    console.log('upload-post error: ', e);
+    res.status(500).json({ error: e });
   }
 });
 
@@ -152,7 +169,8 @@ app.get('/get-post', async (req, res) => {
       res.status(201).send({ status: 'success', data: data });
     });
   } catch (e) {
-    res.send({ Status: 'error', data: e });
+    console.log('get-post error: ', e);
+    res.status(500).json({ error: e });
   }
 });
 
