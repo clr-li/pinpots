@@ -51,7 +51,8 @@ app.post('/login-user', async (req, res) => {
   try {
     const user = await userCol.findOne({ username: username });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (user && password === user.password) {
+      // TODO: hash
       const token = generateToken(user);
       res.status(200).json({ token });
     } else {
@@ -72,7 +73,7 @@ app.post('/signup', async (req, res) => {
     if (existingUser) {
       res.send('Username already taken');
     } else {
-      const hashedPassword = password; // TODO: hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = { username, password: hashedPassword, email };
       await userCol.insertMany([newUser]);
       res.status(201).json('User created');
