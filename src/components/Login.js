@@ -45,8 +45,8 @@ function LoginForm() {
           console.log(error);
           setErrMsg('Invalid username or password.');
         } else if (error.response.status === 500) {
-          console.log(error.response);
           console.log(error);
+          console.log(error.errMsg);
           setErrMsg('Server error. Please try again later.');
         } else {
           setErrMsg('An unexpected error occurred.');
