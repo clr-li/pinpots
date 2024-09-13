@@ -54,6 +54,7 @@ function PostDetails(props) {
     } else {
       try {
         const response = await axios.post(`${HOSTNAME}/upload-post/`, postData);
+        console.log(response);
 
         if (response.status === 201) {
           setMessage({ text: 'Posted successfully!', type: 'success' });
