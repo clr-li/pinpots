@@ -61,6 +61,7 @@ function PostDetails(props) {
           setMessage({ text: 'Failed to post.', type: 'error' });
         }
       } catch (error) {
+        console.log(error);
         setMessage({ text: 'Error posting.', type: 'error' });
       }
     }
