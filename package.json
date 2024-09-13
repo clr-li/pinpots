@@ -35,7 +35,7 @@
   },
   "scripts": {
     "start": "concurrently \"react-dotenv\" \"nodemon server.js\" \"react-scripts start\"",
-    "build": "react-dotenv && react-scripts build",
+    "build": "npm install && react-dotenv && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
