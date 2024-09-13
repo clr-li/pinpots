@@ -24,6 +24,9 @@ function FileUploader(props) {
 
   async function convertToBase64(e) {
     let file = e.target.files[0];
+    console.log(file);
+    console.log(e);
+    console.log(e.target);
     if (file) {
       try {
         const base64Image = await fileToBase64(file);
