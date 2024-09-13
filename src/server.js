@@ -18,7 +18,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-const port = process.env.PORT || 8080;
+const port = 8080;
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -31,7 +31,7 @@ function generateToken(user) {
   });
 }
 
-app.get('/testendpoint', async (req, res) => {
+app.get('/testendpoint', (req, res) => {
   res.send('Hello World!');
 });
 
@@ -69,8 +69,7 @@ app.post('/signup', async (req, res) => {
       res.status(201).json('User created');
     }
   } catch (e) {
-    console.error(e); // Log the error for debugging
-    return res.status(500).json({ message: 'Error adding user' });
+    res.send('Error adding user');
   }
 });
 
@@ -415,9 +414,6 @@ app.get('/follower-count', async (req, res) => {
   }
 });
 
-const server = app.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
-
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
