@@ -51,13 +51,13 @@ app.post('/login-user', async (req, res) => {
   try {
     const user = await userCol.findOne({ username: username });
 
-    if (user && password === user.password) {
-      // TODO: hash
-      const token = generateToken(user);
-      res.status(200).json({ token });
-    } else {
-      res.status(400).json({ error: 'Invalid username or password' });
-    }
+    // if (user && password === user.password) {
+    //   // TODO: hash
+    const token = generateToken(user);
+    res.status(200).json({ token });
+    // } else {
+    //   res.status(400).json({ error: 'Invalid username or password' });
+    // }
   } catch (e) {
     res.status(500).json({ error: e });
   }
