@@ -62,6 +62,7 @@ function PostDetails(props) {
         }
       } catch (error) {
         setMessage({ text: 'Error posting.', type: 'error' });
+      }
     }
   };
 
