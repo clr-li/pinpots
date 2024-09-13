@@ -26,11 +26,11 @@ function FileUploader(props) {
     let file = e.target.files[0];
     console.log(file);
     console.log(e);
-    console.log(e.target);
     if (file) {
       try {
         const base64Image = await fileToBase64(file);
         const resizedImage = await resizeBase64Image(base64Image, file.size);
+        console.log(resizedImage);
         setImage(resizedImage);
 
         // Automatically save the image and location after processing
@@ -129,7 +129,7 @@ function FileUploader(props) {
     setTimeout(() => setMessage(null), 3000); // Hide message after 3 seconds
   }
 
-  return (
+  return selectPosition ? (
     <div className="file-uploader">
       <h2>2. Upload Image</h2>
       <input type="file" accept="image/*" onChange={convertToBase64} />
@@ -139,6 +139,8 @@ function FileUploader(props) {
       </button>
       {message && <PopupMessage message={message.text} type={message.type} />}
     </div>
+  ) : (
+    <div></div>
   );
 }
 
