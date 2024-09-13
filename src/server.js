@@ -72,7 +72,7 @@ app.post('/signup', async (req, res) => {
     if (existingUser) {
       res.send('Username already taken');
     } else {
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = password; // TODO: hash the password
       const newUser = { username, password: hashedPassword, email };
       await userCol.insertMany([newUser]);
       res.status(201).json('User created');
