@@ -75,7 +75,6 @@ app.post('/login-user', async (req, res) => {
       res.status(400).json({ error: 'Invalid username or password' });
     }
   } catch (e) {
-    console.log('login-user error: ', e);
     res.status(500).json({ error: e });
   }
 });
@@ -134,7 +133,6 @@ app.post('/upload-post', async (req, res) => {
     });
     res.status(201).json('success');
   } catch (e) {
-    console.log('upload-post error: ', e);
     res.status(500).json({ error: e });
   }
 });
@@ -169,7 +167,6 @@ app.get('/get-post', async (req, res) => {
       res.status(201).send({ status: 'success', data: data });
     });
   } catch (e) {
-    console.log('get-post error: ', e);
     res.status(500).json({ error: e });
   }
 });
