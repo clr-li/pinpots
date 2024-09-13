@@ -15,6 +15,7 @@ const { TOP_POST_LIKES_THRESHOLD } = require('./constants');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, '../build')));
 
@@ -52,12 +53,12 @@ app.post('/login-user', async (req, res) => {
   try {
     const user = await userCol.findOne({ username: username });
 
-    // if (user && (await bcrypt.compare(password, user.password))) {
-    const token = generateToken(user);
-    res.status(200).json({ token });
-    // } else {
-    //   res.status(400).json({ password: password, user_password: user.password });
-    // }
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const token = generateToken(user);
+      res.status(200).json({ token });
+    } else {
+      res.status(400).json({ password: password, user_password: user.password });
+    }
   } catch (e) {
     res.status(500).json({ error: e });
   }
