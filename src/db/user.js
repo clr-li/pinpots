@@ -1,18 +1,8 @@
 // Filename - user.js
-const mongoose = require("mongoose");
-require("dotenv").config();
-const mongoPassword = process.env.MONGODB_PASSWORD;
-// const uri = `mongodb+srv://pinpot:${mongoPassword}@pinpot.ctzlg.mongodb.net/pinpot?retryWrites=true&w=majority&appName=PinPot`;
-const uri = `mongodb+srv://pinpots:${mongoPassword}@cluster0.ch5rq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
-mongoose
-  .connect(uri)
-  .then(() => {})
-  .catch((e) => {
-    console.log("Connection error:", e);
-  });
-
-const newSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     username: {
       type: String,
@@ -29,13 +19,13 @@ const newSchema = new mongoose.Schema(
     },
   },
   {
-    collection: "users",
-  }
+    collection: 'users',
+  },
 );
 
 // Create a text index on the username field
-newSchema.index({ username: "text" });
+userSchema.index({ username: 'text' });
 
-const userCol = mongoose.model("users", newSchema);
+const userCol = mongoose.model('users', userSchema);
 
 module.exports = userCol;

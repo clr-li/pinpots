@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const connectDB = require('./db/mongooseconnect');
+connectDB();
 const userCol = require('./db/user');
 const postsCol = require('./db/posts');
 const followCol = require('./db/follower');
@@ -12,13 +14,13 @@ const { TOP_POST_LIKES_THRESHOLD, HOSTNAME } = require('./constants');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const corsOptions = {
-  origin: HOSTNAME,
-};
+// const corsOptions = {
+//   origin: HOSTNAME,
+// };
 
-app.use(cors(corsOptions));
+app.use(cors());
 
-const port = 8080;
+const PORT = process.env.PORT || 8080;
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -414,6 +416,6 @@ app.get('/follower-count', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
