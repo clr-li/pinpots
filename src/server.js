@@ -47,6 +47,7 @@ app.get('/testendpoint', (req, res) => {
 // Login route
 app.post('/login-user', async (req, res) => {
   const { username, password } = req.body;
+  console.log('hello', username, password);
 
   try {
     const user = await userCol.findOne({ username: username });
