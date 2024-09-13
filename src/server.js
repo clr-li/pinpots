@@ -25,7 +25,11 @@ const JWT_SECRET = process.env.JWT_SECRET;
 //TODO: HIGH PRIORITY - require authentication for endpoints
 
 // ========== ROUTES ==========
-app.get('*', (req, res) => {
+app.get('/login.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
+
+app.get('/signup.html', (req, res) => {
   res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 

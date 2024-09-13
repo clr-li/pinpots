@@ -16,7 +16,7 @@ export const Routers = () => {
         <Route path="/mymap.html" element={<MapPage />} />
         <Route path="/signup.html" element={<SignupPage />} />
         <Route path="/post.html" element={<Upload />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login.html" element={<LoginPage />} />
         <Route path="/search.html" element={<SearchPage />} />
       </Routes>
     </Router>
