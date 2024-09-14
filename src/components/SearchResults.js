@@ -38,6 +38,8 @@ const SearchResults = ({ searchResults, handleFollowUser, handleSendFriendReques
             followedArray[user._id] = response.data.data.map(obj => obj.followerId);
             doesUserFollow[user._id] = followedArray[user._id].includes(userInfo.id);
 
+            console.log('delete requesterID', userInfo.id);
+            console.log('delete requestedId', user._id);
             // Fetch friend request status
             const friendRequestResponse = await axios.get(`${HOSTNAME}/send-friend-request`, {
               params: {

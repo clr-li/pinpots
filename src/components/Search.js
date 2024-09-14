@@ -85,6 +85,8 @@ function Search() {
         setMessage({ text: "Can't send friend request to yourself", type: 'error' });
         return;
       }
+      console.log('delete search requester', user._id);
+      console.log('delete search requested', requestedId);
       const res = await axios.post(`${HOSTNAME}/send-friend-request`, {
         requesterId: user.id,
         requestedId,
