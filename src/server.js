@@ -446,12 +446,6 @@ app.post('/send-friend-request', async (req, res) => {
   const { requesterId, requestedId } = req.body;
 
   try {
-    // Check if there is already a friend request sent by the current user
-    const existingRequest = await friendCol.findOne({
-      requesterId: requesterId,
-      requestedId: requestedId,
-    });
-
     // Check if the other user has already sent a friend request (mutual request)
     const mutualRequest = await friendCol.findOne({
       status: 'pending',
@@ -470,9 +464,16 @@ app.post('/send-friend-request', async (req, res) => {
       return res.status(201).send({ Status: 'Friends', message: 'You are now friends' });
     }
 
+    // Check if there is already a friend request sent by the current user
+    const existingRequest = await friendCol.findOne({
+      requesterId: requesterId,
+      requestedId: requestedId,
+    });
+
     // If a request already exists, return an error
     if (existingRequest) {
-      return res.status(400).send({ Status: 'Requested', message: 'Friend request already sent' });
+      await friendCol.deleteOne({ requesterId: requesterId, requestedId: requestedId });
+      return res.status(202).send({ Status: 'Request', message: 'Canceled friend request' });
     }
 
     // Create a new friend request with status 'pending'
@@ -481,9 +482,9 @@ app.post('/send-friend-request', async (req, res) => {
       requesterId,
       requestedId,
     });
-    res.status(200).send({ Status: 'Requested', data: 'Friend request sent' });
+    res.status(200).send({ Status: 'Requested', message: 'Friend request sent' });
   } catch (e) {
-    res.status(500).send({ Status: 'Error', data: e.message });
+    res.status(500).send({ Status: 'Error', message: e.message });
   }
 });
 

@@ -92,12 +92,10 @@ function Search() {
         requestedId,
       });
 
-      if (res.status === 201) {
-        setMessage({ text: 'Friend request sent successfully!', type: 'success' });
-      } else if (res.status === 202) {
-        setMessage({ text: 'Friend request canceled!', type: 'success' });
+      if (res.status === 200 || res.status === 201 || res.status === 202) {
+        setMessage({ text: res.data.message, type: 'success' });
       } else {
-        setMessage({ text: res.data.data, type: 'error' });
+        setMessage({ text: res.data.message, type: 'error' });
       }
     } catch (error) {
       console.log(error);

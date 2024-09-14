@@ -47,7 +47,8 @@ const SearchResults = ({ searchResults, handleFollowUser, handleSendFriendReques
                 requestedId: user._id,
               },
             });
-            friendRequestsStatus[user._id] = friendRequestResponse.data.data.status;
+            console.log(friendRequestResponse.data);
+            friendRequestsStatus[user._id] = 'friendRequestResponse.data';
           } catch (error) {
             console.error('Error fetching data:', error);
           }
