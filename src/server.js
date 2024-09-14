@@ -233,7 +233,7 @@ app.get('/posts-by-username-loc', async (req, res) => {
       uid: uid,
       'location.lat': lat,
       'location.lon': lon,
-      $or: [{ visbility: 'Public' }, { visbility: 'Friends' }],
+      visibility: { $in: ['Public', 'Friends'] },
     };
   }
 
@@ -256,7 +256,7 @@ app.get('/posts-by-username', async (req, res) => {
 
     // Check if the users are friends
     const friends = await friendCol.findOne({
-      status: 'friends',
+      status: 'Friends',
       $or: [
         { requesterId: requesterId, requestedId: uid },
         { requesterId: uid, requestedId: requesterId },

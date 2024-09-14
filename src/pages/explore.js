@@ -42,7 +42,7 @@ function ExplorePage() {
           res = await axios.get(`${HOSTNAME}/posts-by-username`, {
             params: { username, requesterId: userInfo.id },
           });
-          console.log('delete', res);
+          console.log('delete explore.js', res);
         } else {
           const followRes = await axios.get(`${HOSTNAME}/get-followed-uids`, {
             params: {

@@ -39,7 +39,7 @@ function ExplorePosts(props) {
                 requesterId: userInfo.id,
               },
             });
-            console.log('delete', res);
+            console.log('delete exploreposts', res);
             postsData = res.data.data;
           } else {
             res = await axios.get(`${HOSTNAME}/get-posts-by-uids-loc`, {
