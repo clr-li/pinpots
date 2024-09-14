@@ -250,37 +250,26 @@ app.get('/posts-by-username-loc', async (req, res) => {
 app.get('/posts-by-username', async (req, res) => {
   const { username, requesterId } = req.query;
 
-  // Get uid
-  let uid = null;
-  let visibility = 'Public';
   try {
-    await userCol.findOne({ username: username }).then(data => {
-      uid = data.id;
-    });
+    const user = await userCol.findOne({ username: username });
+    const uid = user.id;
 
     // Check if the users are friends
     const friends = await friendCol.findOne({
+      status: 'friends',
       $or: [
         { requesterId: requesterId, requestedId: uid },
         { requesterId: uid, requestedId: requesterId },
       ],
     });
 
+    let findDict = { uid: uid, visibility: 'Public' };
     if (friends) {
-      visibility = 'Friends';
+      findDict = { uid: uid, visibility: { $in: ['Public', 'Friends'] } };
     }
-  } catch (e) {
-    res.send({ Status: 'error', data: e });
-  }
 
-  let findDict = { uid: uid, visibility: visibility };
-  if (visibility === 'Friends') {
-    findDict = { uid: uid, $or: [{ visbility: 'Public' }, { visbility: 'Friends' }] };
-  }
-
-  try {
     await postsCol.find(findDict).then(data => {
-      res.status(201).send({ Status: 'success', data: data, friends: friends }); // console.log('delete)
+      res.status(201).send({ Status: 'success', data: data });
     });
   } catch (e) {
     res.send({ Status: 'error', data: e });
