@@ -197,26 +197,46 @@ app.get('/get-posts-by-loc', async (req, res) => {
 
 // Get posts by username, post visibility, and location
 app.get('/get-posts-by-username-loc', async (req, res) => {
-  const { username, visibility, lat, lon } = req.query;
+  const { username, lat, lon, requesterId } = req.query;
 
   // Get uid
   let uid = null;
+  let visibility = 'Public';
   try {
     await userCol.findOne({ username: username }).then(data => {
       uid = data.id;
     });
+
+    // Check if the users are friends
+    const friends = await friendCol.findOne({
+      $or: [
+        { requesterId: requesterId, requestedId: uid },
+        { requesterId: uid, requestedId: requesterId },
+      ],
+    });
+
+    if (friends) {
+      visibility = 'Friends';
+    }
   } catch (e) {
     res.send({ Status: 'error', data: e });
   }
 
-  let findDict = { uid: uid, visibility: visibility };
-  if (lat && lon) {
+  let findDict = {};
+  if (visibility === 'Friends') {
     findDict = {
-      uid: uid,
-      visibility: visibility,
-      'location.lat': lat,
-      'location.lon': lon,
+      $or: [{ visbility: 'Public' }, { visbility: 'Private' }],
     };
+  } else {
+    findDict = {
+      visibility: visibility,
+    };
+  }
+  findDict['uid'] = uid;
+
+  if (lat && lon) {
+    findDict['location.lat'] = lat;
+    findDict['location.lon'] = lon;
   }
 
   try {
@@ -386,7 +406,7 @@ app.post('/like-post', async (req, res) => {
 app.get('/top-posts', async (req, res) => {
   try {
     const posts = await postsCol.find({
-      visibility: 'public',
+      visibility: 'Public',
       $expr: { $gte: [{ $size: '$likes' }, TOP_POST_LIKES_THRESHOLD] },
     });
 
@@ -402,7 +422,7 @@ app.get('/top-posts-by-loc', async (req, res) => {
 
   try {
     const posts = await postsCol.find({
-      visibility: 'public', // TODO: use enum
+      visibility: 'Public', // TODO: use enum
       'location.lat': lat,
       'location.lon': lon,
       $expr: { $gte: [{ $size: '$likes' }, TOP_POST_LIKES_THRESHOLD] },
@@ -448,7 +468,7 @@ app.post('/send-friend-request', async (req, res) => {
   try {
     // Check if the other user has already sent a friend request (mutual request)
     const mutualRequest = await friendCol.findOne({
-      status: 'pending',
+      status: 'Pending',
       requesterId: requestedId,
       requestedId: requesterId,
     });
@@ -458,7 +478,7 @@ app.post('/send-friend-request', async (req, res) => {
       // Update the mutual request status to 'friends'
       await friendCol.updateOne(
         { requesterId: requestedId, requestedId: requesterId },
-        { $set: { status: 'friends' } },
+        { $set: { status: 'Friends' } },
       );
 
       return res.status(201).send({ Status: 'Friends', message: 'You are now friends' });
@@ -466,7 +486,7 @@ app.post('/send-friend-request', async (req, res) => {
 
     // Check if there is already a friend request sent by the current user
     const existingRequest = await friendCol.findOne({
-      status: 'pending',
+      status: 'Pending',
       requesterId: requesterId,
       requestedId: requestedId,
     });
@@ -477,9 +497,8 @@ app.post('/send-friend-request', async (req, res) => {
       return res.status(202).send({ Status: 'Request', message: 'Canceled friend request' });
     }
 
-    // Check if there is already a friend request sent by the current user
     const alreadyFriends = await friendCol.findOne({
-      status: 'friends',
+      status: 'Friends',
       $or: [
         { requesterId: requesterId, requestedId: requestedId },
         { requesterId: requestedId, requestedId: requesterId },
@@ -498,7 +517,7 @@ app.post('/send-friend-request', async (req, res) => {
 
     // Create a new friend request with status 'pending'
     await friendCol.create({
-      status: 'pending',
+      status: 'Pending',
       requesterId,
       requestedId,
     });
