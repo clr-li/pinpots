@@ -4,12 +4,12 @@ import Navbar from '../components/Navbar';
 import LoginForm from '../components/Login';
 
 function LoginPage() {
-    return (
-        <React.StrictMode>
-            <Navbar></Navbar>
-            <LoginForm />
-        </React.StrictMode>
-    );
+  return (
+    <React.StrictMode>
+      <Navbar></Navbar>
+      <LoginForm />
+    </React.StrictMode>
+  );
 }
 
 export default LoginPage;

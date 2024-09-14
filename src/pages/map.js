@@ -12,67 +12,64 @@ import axios from 'axios';
 import { HOSTNAME } from '../constants';
 
 function MapPage() {
-    const [locations, setLocations] = useState([]);
-    const [selectPosition, setSelectPosition] = useState(null);
-    const history = useNavigate();
-    const location = useLocation();
+  const [locations, setLocations] = useState([]);
+  const [selectPosition, setSelectPosition] = useState(null);
+  const history = useNavigate();
+  const location = useLocation();
 
-    useEffect(() => {
-        let userInfo = null;
-        try {
-            userInfo = getUserFromToken();
-        } catch (error) {
-            history('/login.html');
+  useEffect(() => {
+    let userInfo = null;
+    try {
+      userInfo = getUserFromToken();
+    } catch (error) {
+      history('/login.html');
+    }
+    async function fetchData() {
+      try {
+        const res = await axios.get(`${HOSTNAME}/get-post`, {
+          params: { uid: userInfo.id },
+        });
+
+        if (res.status === 201) {
+          let extractedLocations = res.data.data.map(post => post.location);
+          extractedLocations = Array.from(
+            new Set(extractedLocations.map(loc => JSON.stringify(loc))),
+          ).map(loc => JSON.parse(loc));
+          setLocations(extractedLocations);
+        } else {
+          console.log('Failed to fetch posts', res.status);
         }
-        async function fetchData() {
-            try {
-                const res = await axios.get(`${HOSTNAME}/get-post`, {
-                    params: { uid: userInfo.id },
-                });
+      } catch (error) {
+        console.log('Error fetching data:', error);
+      }
+    }
 
-                if (res.status === 201) {
-                    let extractedLocations = res.data.data.map(post => post.location);
-                    extractedLocations = Array.from(
-                        new Set(extractedLocations.map(loc => JSON.stringify(loc))),
-                    ).map(loc => JSON.parse(loc));
-                    setLocations(extractedLocations);
-                } else {
-                    console.log('Failed to fetch posts', res.status);
-                }
-            } catch (error) {
-                console.log('Error fetching data:', error);
-            }
-        }
+    fetchData();
+  }, [location.search, history]);
 
-        fetchData();
-    }, [location.search, history]);
+  const handleMarkerClick = location => {
+    setSelectPosition(location);
+  };
 
-    const handleMarkerClick = location => {
-        setSelectPosition(location);
-    };
-
-    return (
-        <React.StrictMode>
-            <Navbar />
-            <div className="half-half-containter">
-                <div className="half-container">
-                    <Maps
-                        selectPosition={selectPosition}
-                        locations={locations}
-                        onMarkerClick={handleMarkerClick}
-                    />
-                </div>
-                <div className="half-container">
-                    <UserProfile />
-                    <SearchBox
-                        selectPosition={selectPosition}
-                        setSelectPosition={setSelectPosition}
-                    />
-                    <MyPosts selectPosition={selectPosition} />
-                </div>
-            </div>
-        </React.StrictMode>
-    );
+  return (
+    <React.StrictMode>
+      <Navbar />
+      <div className="half-half-containter">
+        <div className="half-container">
+          <Maps
+            selectPosition={selectPosition}
+            locations={locations}
+            onMarkerClick={handleMarkerClick}
+          />
+        </div>
+        <div className="half-container">
+          <UserProfile />
+          <SearchBox selectPosition={selectPosition} setSelectPosition={setSelectPosition} />
+          <MyPosts selectPosition={selectPosition} />
+        </div>
+      </div>
+    </React.StrictMode>
+  );
 }
 
 export default MapPage;

@@ -4,12 +4,12 @@ import Navbar from '../components/Navbar';
 import SignupForm from '../components/Signup';
 
 function SignupPage() {
-    return (
-        <React.StrictMode>
-            <Navbar></Navbar>
-            <SignupForm />
-        </React.StrictMode>
-    );
+  return (
+    <React.StrictMode>
+      <Navbar></Navbar>
+      <SignupForm />
+    </React.StrictMode>
+  );
 }
 
 export default SignupPage;

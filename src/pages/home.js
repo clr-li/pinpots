@@ -10,73 +10,70 @@ import { getUserFromToken } from '../auth';
 import { HOSTNAME } from '../constants';
 
 function HomePage() {
-    const [locations, setLocations] = useState([]);
-    const [selectPosition, setSelectPosition] = useState(null);
-    const [loggedIn, setLoggedIn] = useState(null);
+  const [locations, setLocations] = useState([]);
+  const [selectPosition, setSelectPosition] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(null);
 
-    useEffect(() => {
-        async function fetchTopPosts() {
-            try {
-                let userInfo = null;
-                try {
-                    userInfo = getUserFromToken();
-                    setLoggedIn(userInfo);
-                } catch {
-                    console.log('Not logged in home');
-                }
-
-                const res = await axios.get(`${HOSTNAME}/top-posts`);
-
-                if (res.status === 200) {
-                    let extractedLocations = res.data.data.map(post => post.location);
-                    extractedLocations = Array.from(
-                        new Set(extractedLocations.map(loc => JSON.stringify(loc))),
-                    ).map(loc => JSON.parse(loc));
-                    setLocations(extractedLocations);
-                } else {
-                    console.log('Failed to fetch top posts', res.status);
-                }
-            } catch (error) {
-                console.log('Error fetching top posts:', error);
-            }
+  useEffect(() => {
+    async function fetchTopPosts() {
+      try {
+        let userInfo = null;
+        try {
+          userInfo = getUserFromToken();
+          setLoggedIn(userInfo);
+        } catch {
+          console.log('Not logged in home');
         }
 
-        fetchTopPosts();
-    }, []);
+        const res = await axios.get(`${HOSTNAME}/top-posts`);
 
-    const handleMarkerClick = location => {
-        setSelectPosition(location);
-    };
+        if (res.status === 200) {
+          let extractedLocations = res.data.data.map(post => post.location);
+          extractedLocations = Array.from(
+            new Set(extractedLocations.map(loc => JSON.stringify(loc))),
+          ).map(loc => JSON.parse(loc));
+          setLocations(extractedLocations);
+        } else {
+          console.log('Failed to fetch top posts', res.status);
+        }
+      } catch (error) {
+        console.log('Error fetching top posts:', error);
+      }
+    }
 
-    return (
-        <React.StrictMode>
-            <Navbar />
-            <div className="half-half-containter">
-                <div className="half-container">
-                    <Maps
-                        selectPosition={selectPosition}
-                        locations={locations}
-                        onMarkerClick={handleMarkerClick}
-                    />
-                </div>
-                <div className="half-container">
-                    {loggedIn ? (
-                        <h1>PinPot Top Posts</h1>
-                    ) : (
-                        <div>
-                            <h1>PinPot</h1>
-                            <h4>Write reviews, organize your photos, or explore a new location!</h4>
-                        </div>
-                    )}
-                    <SearchBox
-                        selectPosition={selectPosition}
-                        setSelectPosition={setSelectPosition}
-                    />
-                    <TopPosts selectPosition={selectPosition} />
-                </div>
+    fetchTopPosts();
+  }, []);
+
+  const handleMarkerClick = location => {
+    setSelectPosition(location);
+  };
+
+  return (
+    <React.StrictMode>
+      <Navbar />
+      <div className="half-half-containter">
+        <div className="half-container">
+          <Maps
+            selectPosition={selectPosition}
+            locations={locations}
+            onMarkerClick={handleMarkerClick}
+          />
+        </div>
+        <div className="half-container">
+          {loggedIn ? (
+            <h1>PinPots Top Posts</h1>
+          ) : (
+            <div>
+              <h1>PinPots</h1>
+              <h4>Write reviews, organize your photos, or explore a new location!</h4>
             </div>
-        </React.StrictMode>
-    );
+          )}
+          <SearchBox selectPosition={selectPosition} setSelectPosition={setSelectPosition} />
+          <TopPosts selectPosition={selectPosition} />
+        </div>
+      </div>
+    </React.StrictMode>
+  );
 }
 
 export default HomePage;
