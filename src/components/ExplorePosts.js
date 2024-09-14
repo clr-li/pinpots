@@ -49,8 +49,8 @@ function ExplorePosts(props) {
                 requesterId: userInfo.id,
               },
             });
-            console.log('delete explorepostss.js', res);
-            postsData = res.data.posts;
+            console.log('delete explorepostss.js', res.data.data);
+            postsData = res.data.data;
             postsData.forEach(post => {
               post['username'] = res.data.users[post.uid] || 'Unknown'; // Map usernames to posts
             });
