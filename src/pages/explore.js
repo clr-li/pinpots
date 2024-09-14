@@ -54,7 +54,6 @@ function ExplorePage() {
           res = await axios.get(`${HOSTNAME}/posts-by-uids`, {
             params: { uids: followedIds, requesterId: userInfo.id },
           });
-          console.log('delete explore.js', res);
         }
 
         if (res.status === 201) {
