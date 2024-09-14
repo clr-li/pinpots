@@ -415,7 +415,7 @@ app.get('/posts-by-uids-loc', async (req, res) => {
 
     res.status(201).send({ Status: 'success', posts: allPosts, users: userMap });
   } catch (e) {
-    res.send({ Status: 'error', data: e.message });
+    res.status(500).send({ Status: 'error', data: e.message });
   }
 });
 
