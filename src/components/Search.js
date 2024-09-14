@@ -19,7 +19,7 @@ function Search() {
       const userInfo = getUserFromToken();
       setUser(userInfo);
     } catch (error) {
-      history('/login');
+      history('/login.html');
     }
   }, [history]);
 
@@ -79,6 +79,29 @@ function Search() {
     }
   };
 
+  const handleSendFriendRequest = async requestedId => {
+    try {
+      if (user.id === requestedId) {
+        setMessage({ text: "Can't send friend request to yourself", type: 'error' });
+        return;
+      }
+      const res = await axios.post(`${HOSTNAME}/send-friend-request`, {
+        requesterId: user.id,
+        requestedId,
+      });
+
+      if (res.status === 201) {
+        setMessage({ text: 'Friend request sent successfully!', type: 'success' });
+      } else if (res.status === 202) {
+        setMessage({ text: 'Friend request canceled!', type: 'success' });
+      } else {
+        setMessage({ text: res.data.data, type: 'error' });
+      }
+    } catch (error) {
+      setMessage({ text: 'Error sending friend request', type: 'error' });
+    }
+  };
+
   const updateFollowerCount = (userId, increment) => {
     setSearchResults(prevResults =>
       prevResults.map(user =>
@@ -108,8 +131,8 @@ function Search() {
       <SearchResults
         searchResults={searchResults}
         handleFollowUser={handleFollowUser}
+        handleSendFriendRequest={handleSendFriendRequest} // Pass the friend request handler
         updateFollowerCount={updateFollowerCount}
-        currentUserId={user?.id} // Pass current user ID to SearchResults
       />
     </div>
   );

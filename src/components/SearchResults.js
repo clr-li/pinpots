@@ -1,44 +1,96 @@
 // Filename: SearchResults.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { getUserFromToken } from '../auth';
+import '../styles/search.css'; // Include any styles you need
+import { useNavigate } from 'react-router-dom';
 import { HOSTNAME } from '../constants';
 
-const SearchResults = ({ searchResults, handleFollowUser, updateFollowerCount, currentUserId }) => {
-  const handleSendFriendRequest = async requestedId => {
-    try {
-      const res = await axios.post(`${HOSTNAME}/send-friend-request`, {
-        requesterId: currentUserId,
-        requestedId,
-      });
+const SearchResults = ({ searchResults, handleFollowUser, handleSendFriendRequest }) => {
+  const [followedUsers, setFollowedUsers] = useState([]);
+  const [userFollows, setUserFollows] = useState([]);
+  const [friendRequests, setFriendRequests] = useState({});
+  const history = useNavigate();
 
-      if (res.status === 200) {
-        alert('Friend request sent');
-      } else if (res.status === 201 && res.data.data === 'You are now friends') {
-        alert('You are now friends');
-      } else {
-        alert(res.data.data);
+  useEffect(() => {
+    const fetchFollowerCounts = async () => {
+      let userInfo = null;
+      try {
+        userInfo = getUserFromToken();
+      } catch (error) {
+        history('/login.html');
       }
-    } catch (error) {
-      alert('Error sending friend request');
-    }
-  };
+      const followedArray = {};
+      const doesUserFollow = {};
+      const friendRequestsStatus = {};
+
+      await Promise.all(
+        searchResults.map(async user => {
+          try {
+            // Fetch follower counts
+            const response = await axios.get(`${HOSTNAME}/follower-count`, {
+              params: {
+                uid: user._id,
+              },
+            });
+            followedArray[user._id] = response.data.data.map(obj => obj.followerId);
+            doesUserFollow[user._id] = followedArray[user._id].includes(userInfo.id);
+
+            // Fetch friend request status
+            const friendRequestResponse = await axios.get(`${HOSTNAME}/send-friend-request`, {
+              params: {
+                requesterId: userInfo.id,
+                requestedId: user._id,
+              },
+            });
+            friendRequestsStatus[user._id] = friendRequestResponse.data.data.status;
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        }),
+      );
+      setFollowedUsers(followedArray);
+      setUserFollows(doesUserFollow);
+      setFriendRequests(friendRequestsStatus);
+    };
+
+    fetchFollowerCounts();
+  }, [searchResults]);
 
   return (
-    <div className="search-results-container">
-      {searchResults.map(user => (
-        <div key={user._id} className="search-result-item">
-          <div>
-            <span>{user.username}</span>
+    <div className="search-results">
+      {searchResults.length !== 0 &&
+        searchResults.map(user => (
+          <div key={user._id} className="user-info">
+            <Link to={`/explore.html?username=${user.username}`}>@{user.username}</Link>
+            <span className="follower-count">
+              {followedUsers[user._id] !== undefined
+                ? `${followedUsers[user._id].length} ${followedUsers[user._id].length === 1 ? 'follower' : 'followers'}`
+                : 'Loading...'}
+            </span>
             <button onClick={() => handleFollowUser(user._id)}>
-              {user.isFollowing ? 'Unfollow' : 'Follow'}
+              {userFollows[user._id] ? 'Unfollow' : 'Follow'}
             </button>
-            <button onClick={() => handleSendFriendRequest(user._id)}>Send Friend Request</button>
+
+            <button onClick={() => handleSendFriendRequest(user._id)}>
+              {friendRequests[user._id] === 'pending'
+                ? 'Request Sent'
+                : friendRequests[user._id] === 'friends'
+                  ? 'Friends'
+                  : 'Send Friend Request'}
+            </button>
           </div>
-          <div>Followers: {user.followerCount}</div>
-        </div>
-      ))}
+        ))}
     </div>
   );
+};
+
+SearchResults.propTypes = {
+  searchResults: PropTypes.array.isRequired,
+  handleFollowUser: PropTypes.func.isRequired,
+  handleSendFriendRequest: PropTypes.func.isRequired, // Add friend request handler as prop
 };
 
 export default SearchResults;
