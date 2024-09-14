@@ -401,7 +401,19 @@ app.get('/posts-by-uids-loc', async (req, res) => {
       allPosts = [...allPosts, ...posts];
     }
 
-    res.status(201).send({ Status: 'success', data: allPosts });
+    const postUids = posts.map(post => post.uid);
+
+    const users = await userCol.find({
+      _id: { $in: postUids },
+    });
+
+    // Transform users array into a map from id to username
+    const userMap = users.reduce((acc, user) => {
+      acc[user._id.toString()] = user.username;
+      return acc;
+    }, {});
+
+    res.status(201).send({ Status: 'success', posts: allPosts, users: userMap });
   } catch (e) {
     res.send({ Status: 'error', data: e.message });
   }
