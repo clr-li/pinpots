@@ -442,29 +442,40 @@ app.get('/follower-count', async (req, res) => {
 });
 
 // Send a friend request
-app.post('/send-friend-request', authenticateToken, async (req, res) => {
+app.post('/send-friend-request', async (req, res) => {
   const { requesterId, requestedId } = req.body;
 
   try {
-    // Check if the request already exists
+    // Check if there is already a friend request sent by the current user
     const existingRequest = await friendCol.findOne({
       requesterId: requesterId,
       requestedId: requestedId,
     });
 
+    // Check if the other user has already sent a friend request (mutual request)
     const mutualRequest = await friendCol.findOne({
       status: 'pending',
       requesterId: requestedId,
       requestedId: requesterId,
     });
 
-    if (existingRequest) {
-      return res.status(400).send({ Status: 'error', data: 'Friend request already sent' });
-    } else if (mutualRequest) {
-      res.status(201).send({ Status: 'success', data: 'You are now friends' });
+    // If a mutual request is found, update both requests to 'friends'
+    if (mutualRequest) {
+      // Update the mutual request status to 'friends'
+      await friendCol.updateOne(
+        { requesterId: requestedId, requestedId: requesterId },
+        { $set: { status: 'friends' } },
+      );
+
+      return res.status(201).send({ Status: 'Friends', message: 'You are now friends' });
     }
 
-    // Create a new friend request
+    // If a request already exists, return an error
+    if (existingRequest) {
+      return res.status(400).send({ Status: 'Requested', message: 'Friend request already sent' });
+    }
+
+    // Create a new friend request with status 'pending'
     const friendRequest = new FriendRelation({
       status: 'pending',
       requesterId,
@@ -472,9 +483,9 @@ app.post('/send-friend-request', authenticateToken, async (req, res) => {
     });
 
     await friendRequest.save();
-    res.status(200).send({ Status: 'success', data: 'Friend request sent' });
+    res.status(200).send({ Status: 'Requested', data: 'Friend request sent' });
   } catch (e) {
-    res.status(500).send({ Status: 'error', data: e.message });
+    res.status(500).send({ Status: 'Error', data: e.message });
   }
 });
 
