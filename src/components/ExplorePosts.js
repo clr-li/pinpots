@@ -31,7 +31,7 @@ function ExplorePosts(props) {
           let postsData = null;
           if (username) {
             setParamUsername(username);
-            res = await axios.get(`${HOSTNAME}/get-posts-by-username-loc`, {
+            res = await axios.get(`${HOSTNAME}/posts-by-username-loc`, {
               params: {
                 username: username,
                 lat: selectPosition.lat,
@@ -39,6 +39,7 @@ function ExplorePosts(props) {
                 requesterId: userInfo.id,
               },
             });
+            console.log('delete', res);
             postsData = res.data.data;
           } else {
             res = await axios.get(`${HOSTNAME}/get-posts-by-uids-loc`, {

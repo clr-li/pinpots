@@ -39,9 +39,10 @@ function ExplorePage() {
 
         if (username) {
           setUserState(username);
-          res = await axios.get(`${HOSTNAME}/get-posts-by-username-loc`, {
+          res = await axios.get(`${HOSTNAME}/posts-by-username`, {
             params: { username, requesterId: userInfo.id },
           });
+          console.log('delete', res);
         } else {
           const followRes = await axios.get(`${HOSTNAME}/get-followed-uids`, {
             params: {

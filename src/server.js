@@ -196,7 +196,7 @@ app.get('/get-posts-by-loc', async (req, res) => {
 });
 
 // Get posts by username, post visibility, and location
-app.get('/get-posts-by-username-loc', async (req, res) => {
+app.get('/posts-by-username-loc', async (req, res) => {
   const { username, lat, lon, requesterId } = req.query;
 
   // Get uid
@@ -222,21 +222,60 @@ app.get('/get-posts-by-username-loc', async (req, res) => {
     res.send({ Status: 'error', data: e });
   }
 
-  let findDict = {};
+  let findDict = {
+    uid: uid,
+    'location.lat': lat,
+    'location.lon': lon,
+    visibility: visibility,
+  };
   if (visibility === 'Friends') {
     findDict = {
+      uid: uid,
+      'location.lat': lat,
+      'location.lon': lon,
       $or: [{ visbility: 'Public' }, { visbility: 'Friends' }],
     };
-  } else {
-    findDict = {
-      visibility: visibility,
-    };
   }
-  findDict['uid'] = uid;
 
-  if (lat && lon) {
-    findDict['location.lat'] = lat;
-    findDict['location.lon'] = lon;
+  try {
+    await postsCol.find(findDict).then(data => {
+      res.status(201).send({ Status: 'success', data: data, friends: friends }); // console.log('delete)
+    });
+  } catch (e) {
+    res.send({ Status: 'error', data: e });
+  }
+});
+
+// Get posts by username
+app.get('/posts-by-username', async (req, res) => {
+  const { username, requesterId } = req.query;
+
+  // Get uid
+  let uid = null;
+  let visibility = 'Public';
+  try {
+    await userCol.findOne({ username: username }).then(data => {
+      uid = data.id;
+    });
+
+    // Check if the users are friends
+    const friends = await friendCol.findOne({
+      $or: [
+        { requesterId: requesterId, requestedId: uid },
+        { requesterId: uid, requestedId: requesterId },
+      ],
+    });
+
+    if (friends) {
+      visibility = 'Friends';
+    }
+  } catch (e) {
+    res.send({ Status: 'error', data: e });
+  }
+
+  let findDict = { uid: uid, visibility: visibility };
+  if (visibility === 'Friends') {
+    findDict = { uid: uid, $or: [{ visbility: 'Public' }, { visbility: 'Friends' }] };
   }
 
   try {
