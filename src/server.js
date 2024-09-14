@@ -476,16 +476,37 @@ app.post('/send-friend-request', async (req, res) => {
     }
 
     // Create a new friend request with status 'pending'
-    const friendRequest = new FriendRelation({
+    await friendCol.create({
       status: 'pending',
       requesterId,
       requestedId,
     });
-
-    await friendRequest.save();
     res.status(200).send({ Status: 'Requested', data: 'Friend request sent' });
   } catch (e) {
     res.status(500).send({ Status: 'Error', data: e.message });
+  }
+});
+
+// Get friend status between two users
+app.get('/friend-status', async (req, res) => {
+  const { requesterId, requestedId } = req.query;
+
+  try {
+    // Check if the users are friends
+    const friends = await friendCol.findOne({
+      requesterId: requesterId,
+      requestedId: requestedId,
+    });
+
+    if (friends) {
+      return res.status(200).send({ Status: friends.status, message: friends.status });
+    }
+
+    return res
+      .status(200)
+      .send({ Status: 'Request Friend', message: 'No friend relationship found' });
+  } catch (e) {
+    res.status(500).send({ Status: 'Error', message: e.message });
   }
 });
 
