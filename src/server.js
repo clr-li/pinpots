@@ -466,6 +466,7 @@ app.post('/send-friend-request', async (req, res) => {
 
     // Check if there is already a friend request sent by the current user
     const existingRequest = await friendCol.findOne({
+      status: 'pending',
       requesterId: requesterId,
       requestedId: requestedId,
     });
@@ -474,6 +475,25 @@ app.post('/send-friend-request', async (req, res) => {
     if (existingRequest) {
       await friendCol.deleteOne({ requesterId: requesterId, requestedId: requestedId });
       return res.status(202).send({ Status: 'Request', message: 'Canceled friend request' });
+    }
+
+    // Check if there is already a friend request sent by the current user
+    const alreadyFriends = await friendCol.findOne({
+      status: 'friends',
+      $or: [
+        { requesterId: requesterId, requestedId: requestedId },
+        { requesterId: requestedId, requestedId: requesterId },
+      ],
+    });
+
+    if (alreadyFriends) {
+      await friendCol.deleteOne({
+        $or: [
+          { requesterId: requesterId, requestedId: requestedId },
+          { requesterId: requestedId, requestedId: requesterId },
+        ],
+      });
+      return res.status(202).send({ Status: 'Request', message: 'Removed friend' });
     }
 
     // Create a new friend request with status 'pending'
