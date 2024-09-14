@@ -1,4 +1,4 @@
-// Filename - Search.js
+// Filename: Search.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/search.css'; // Include any styles you need
@@ -19,7 +19,7 @@ function Search() {
       const userInfo = getUserFromToken();
       setUser(userInfo);
     } catch (error) {
-      history('/login.html');
+      history('/login');
     }
   }, [history]);
 
@@ -109,6 +109,7 @@ function Search() {
         searchResults={searchResults}
         handleFollowUser={handleFollowUser}
         updateFollowerCount={updateFollowerCount}
+        currentUserId={user?.id} // Pass current user ID to SearchResults
       />
     </div>
   );

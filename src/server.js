@@ -8,6 +8,7 @@ connectDB();
 const userCol = require('./db/user');
 const postsCol = require('./db/posts');
 const followCol = require('./db/follower');
+const friendCol = require('./db/friend');
 const path = require('path');
 const levenshtein = require('js-levenshtein');
 require('dotenv').config();
@@ -435,6 +436,43 @@ app.get('/follower-count', async (req, res) => {
     });
 
     res.status(200).send({ Status: 'success', data: followers });
+  } catch (e) {
+    res.status(500).send({ Status: 'error', data: e.message });
+  }
+});
+
+// Send a friend request
+app.post('/send-friend-request', authenticateToken, async (req, res) => {
+  const { requesterId, requestedId } = req.body;
+
+  try {
+    // Check if the request already exists
+    const existingRequest = await friendCol.findOne({
+      requesterId: requesterId,
+      requestedId: requestedId,
+    });
+
+    const mutualRequest = await friendCol.findOne({
+      status: 'pending',
+      requesterId: requestedId,
+      requestedId: requesterId,
+    });
+
+    if (existingRequest) {
+      return res.status(400).send({ Status: 'error', data: 'Friend request already sent' });
+    } else if (mutualRequest) {
+      res.status(201).send({ Status: 'success', data: 'You are now friends' });
+    }
+
+    // Create a new friend request
+    const friendRequest = new FriendRelation({
+      status: 'pending',
+      requesterId,
+      requestedId,
+    });
+
+    await friendRequest.save();
+    res.status(200).send({ Status: 'success', data: 'Friend request sent' });
   } catch (e) {
     res.status(500).send({ Status: 'error', data: e.message });
   }
