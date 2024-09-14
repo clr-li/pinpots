@@ -241,7 +241,7 @@ app.get('/get-posts-by-username-loc', async (req, res) => {
 
   try {
     await postsCol.find(findDict).then(data => {
-      res.status(201).send({ Status: 'success', data: data });
+      res.status(201).send({ Status: 'success', data: data, friends: friends }); // console.log('delete)
     });
   } catch (e) {
     res.send({ Status: 'error', data: e });
@@ -540,9 +540,7 @@ app.get('/friend-status-display', async (req, res) => {
     });
 
     if (friendStatus) {
-      return res
-        .status(200)
-        .send({ Status: requesterStatus.status, message: requesterStatus.status });
+      return res.status(200).send({ Status: friendStatus.status, message: friendStatus.status });
     }
 
     return res
