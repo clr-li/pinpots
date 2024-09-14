@@ -13,6 +13,7 @@ import { HOSTNAME } from '../constants';
 function ExplorePosts(props) {
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [paramUsername, setParamUsername] = useState('');
   const [likedPosts, setLikedPosts] = useState(new Set()); // Track liked posts
   const { selectPosition, uids } = props;
   const location = useLocation();
@@ -29,6 +30,7 @@ function ExplorePosts(props) {
           let res = null;
           let postsData = null;
           if (username) {
+            setParamUsername(username);
             res = await axios.get(`${HOSTNAME}/get-posts-by-username-loc`, {
               params: {
                 username: username,
@@ -141,7 +143,7 @@ function ExplorePosts(props) {
             />
           </div>
           <div className="post-date">
-            {formatDate(data.uploadDate)} @{data.username || 'Unknown'}
+            {formatDate(data.uploadDate)} @{data.username || username}
           </div>
           {data.text && <div className="post-caption">{truncateCaption(data.text)}</div>}
           <div className="post-likes">
@@ -163,7 +165,7 @@ function ExplorePosts(props) {
           <div className="popup-content" onClick={e => e.stopPropagation()}>
             <img className="popup-img" src={selectedPost.img} alt="Selected Post" />
             <div className="post-date">
-              {formatDate(selectedPost.uploadDate)} @{selectedPost.username || 'Unknown'}
+              {formatDate(selectedPost.uploadDate)} @{selectedPost.username || paramUsername}
             </div>
             <div className="popup-caption">{selectedPost.text}</div>
             <button className="close-popup" onClick={closePopup}>
