@@ -39,13 +39,12 @@ const SearchResults = ({ searchResults, handleFollowUser, handleSendFriendReques
             doesUserFollow[user._id] = followedArray[user._id].includes(userInfo.id);
 
             // Fetch friend request status
-            const friendRequestResponse = await axios.get(`${HOSTNAME}/friend-status`, {
+            const friendRequestResponse = await axios.get(`${HOSTNAME}/friend-status-display`, {
               params: {
                 requesterId: userInfo.id,
                 requestedId: user._id,
               },
             });
-            console.log('delete friend status', friendRequestResponse.data.Status);
             friendRequestsStatus[user._id] = friendRequestResponse.data.Status;
           } catch (error) {
             console.error('Error fetching data:', error);

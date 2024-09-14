@@ -36,7 +36,7 @@ function ExplorePosts(props) {
                 username: username,
                 lat: selectPosition.lat,
                 lon: selectPosition.lon,
-                visibility: postVisibility.PUBLIC,
+                requesterId: userInfo.id,
               },
             });
             postsData = res.data.data;

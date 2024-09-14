@@ -225,7 +225,7 @@ app.get('/get-posts-by-username-loc', async (req, res) => {
   let findDict = {};
   if (visibility === 'Friends') {
     findDict = {
-      $or: [{ visbility: 'Public' }, { visbility: 'Private' }],
+      $or: [{ visbility: 'Public' }, { visbility: 'Friends' }],
     };
   } else {
     findDict = {
@@ -522,6 +522,32 @@ app.post('/send-friend-request', async (req, res) => {
       requestedId,
     });
     res.status(200).send({ Status: 'Requested', message: 'Friend request sent' });
+  } catch (e) {
+    res.status(500).send({ Status: 'Error', message: e.message });
+  }
+});
+
+// Get friend status for requester
+app.get('/friend-status-display', async (req, res) => {
+  const { requesterId, requestedId } = req.query;
+
+  try {
+    const friendStatus = await friendCol.findOne({
+      $or: [
+        { status: 'Friends', requesterId: requestedId, requestedId: requesterId },
+        { requesterId: requesterId, requestedId: requestedId },
+      ],
+    });
+
+    if (friendStatus) {
+      return res
+        .status(200)
+        .send({ Status: requesterStatus.status, message: requesterStatus.status });
+    }
+
+    return res
+      .status(200)
+      .send({ Status: 'Request Friend', message: 'No friend relationship found' });
   } catch (e) {
     res.status(500).send({ Status: 'Error', message: e.message });
   }

@@ -40,7 +40,7 @@ function ExplorePage() {
         if (username) {
           setUserState(username);
           res = await axios.get(`${HOSTNAME}/get-posts-by-username-loc`, {
-            params: { username, visibility: postVisibility.PUBLIC },
+            params: { username, requesterId: userInfo.id },
           });
         } else {
           const followRes = await axios.get(`${HOSTNAME}/get-followed-uids`, {
