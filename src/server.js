@@ -369,7 +369,7 @@ app.get('/posts-by-uids', async (req, res) => {
 
       // Find posts where the uid is in the list of uids
       let posts = await postsCol.find(findDict);
-      allPosts.append(posts);
+      allPosts.push(posts);
     }
 
     res.status(201).send({ Status: 'success', data: allPosts });
