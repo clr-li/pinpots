@@ -76,11 +76,7 @@ const SearchResults = ({ searchResults, handleFollowUser, handleSendFriendReques
             </button>
 
             <button onClick={() => handleSendFriendRequest(user._id)}>
-              {friendRequests[user._id] === 'pending'
-                ? 'Request Sent'
-                : friendRequests[user._id] === 'friends'
-                  ? 'Friends'
-                  : 'Send Friend Request'}
+              {friendRequests[user._id]}
             </button>
           </div>
         ))}
