@@ -12,14 +12,16 @@ import { HOSTNAME } from '../constants';
 function TopPosts({ selectPosition }) {
     const [posts, setPosts] = useState([]);
     const [selectedPost, setSelectedPost] = useState(null);
-    const [likedPosts, setLikedPosts] = useState(new Set());
+    const [likedPosts, setLikedPosts] = useState(new Set()); // Track liked posts
+    const [userInfo, setUserInfo] = useState(null); // Store user info
 
     useEffect(() => {
         async function fetchData() {
             try {
-                let userInfo = null;
+                let user = null;
                 try {
-                    userInfo = getUserFromToken();
+                    user = getUserFromToken();
+                    setUserInfo(user); // Set user info for further use
                 } catch {
                     console.log('Not logged in');
                 }
@@ -35,8 +37,17 @@ function TopPosts({ selectPosition }) {
 
                     if (res.status === 200) {
                         const postsData = res.data.posts;
-                        if (userInfo) {
+                        if (user) {
+                            // Map usernames for posts
                             postsData.map(post => (post['username'] = res.data.users[post.uid]));
+
+                            // Initialize likedPosts set based on user's liked posts
+                            const likedPostsSet = new Set(
+                                postsData
+                                    .filter(post => post.likes.includes(user.id))
+                                    .map(post => post._id)
+                            );
+                            setLikedPosts(likedPostsSet);
                         }
                         setPosts(postsData);
                     } else {
@@ -70,8 +81,6 @@ function TopPosts({ selectPosition }) {
 
     const handleLikeClick = async postId => {
         try {
-            const userInfo = getUserFromToken();
-
             const res = await axios.post(`${HOSTNAME}/like-post`, {
                 postId: postId,
                 userId: userInfo.id,
@@ -89,7 +98,7 @@ function TopPosts({ selectPosition }) {
                             return { ...post, likes: updatedLikes };
                         }
                         return post;
-                    }),
+                    })
                 );
 
                 // Toggle like status in the likedPosts set
