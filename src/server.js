@@ -348,16 +348,31 @@ app.get('/get-followed-uids', async (req, res) => {
 });
 
 // Get posts by a list of uids and visibility
-app.get('/get-posts-by-uids', async (req, res) => {
-  const { uids, visibility } = req.query;
+app.get('/posts-by-uids', async (req, res) => {
+  const { uids, requesterId } = req.query;
 
   try {
-    // Find posts where the uid is in the list of uids
-    const posts = await postsCol.find({
-      uid: { $in: uids },
-      visibility: visibility,
-    });
-    res.status(201).send({ Status: 'success', data: posts });
+    let allPosts = [];
+    for (const uid of uids) {
+      let friends = await friendCol.findOne({
+        status: 'Friends',
+        $or: [
+          { requesterId: requesterId, requestedId: uid },
+          { requesterId: uid, requestedId: requesterId },
+        ],
+      });
+
+      let findDict = { uid: uid, visibility: 'Public' };
+      if (friends) {
+        findDict = { uid: uid, visibility: { $in: ['Public', 'Friends'] } };
+      }
+
+      // Find posts where the uid is in the list of uids
+      let posts = await postsCol.find(findDict);
+      allPosts.append(posts);
+    }
+
+    res.status(201).send({ Status: 'success', data: allPosts });
   } catch (e) {
     res.send({ Status: 'error', data: e.message });
   }

@@ -42,7 +42,6 @@ function ExplorePage() {
           res = await axios.get(`${HOSTNAME}/posts-by-username`, {
             params: { username, requesterId: userInfo.id },
           });
-          console.log('delete explore.js', res);
         } else {
           const followRes = await axios.get(`${HOSTNAME}/get-followed-uids`, {
             params: {
@@ -52,9 +51,10 @@ function ExplorePage() {
           const followedIds = followRes.data.data.map(obj => obj.followedId);
           setUids(followedIds);
 
-          res = await axios.get(`${HOSTNAME}/get-posts-by-uids`, {
-            params: { uids: followedIds, visibility: postVisibility.PUBLIC },
+          res = await axios.get(`${HOSTNAME}/posts-by-uids`, {
+            params: { uids: followedIds, requesterId: userInfo.id },
           });
+          console.log('delete explore.js', res);
         }
 
         if (res.status === 201) {
