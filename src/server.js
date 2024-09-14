@@ -244,7 +244,6 @@ app.get('/posts-by-username', async (req, res) => {
     const user = await userCol.findOne({ username: username });
     const uid = user.id;
 
-    // Check if the users are friends
     const friends = await friendCol.findOne({
       status: 'Friends',
       $or: [
@@ -291,7 +290,6 @@ app.post('/follow-user', async (req, res) => {
   const { followedId, followerId } = req.body;
 
   try {
-    // Check if the user is already following the target user
     const existingRelation = await followCol.findOne({
       followerId,
       followedId: followedId,
@@ -301,7 +299,6 @@ app.post('/follow-user', async (req, res) => {
       return res.send({ Status: 'error', data: 'Already following this user' });
     }
 
-    // Create a new follow relationship
     const newRelation = new followCol({ followerId, followedId: followedId });
     await newRelation.save();
 
@@ -316,7 +313,6 @@ app.post('/unfollow-user', async (req, res) => {
   const { followedId, followerId } = req.body;
 
   try {
-    // Check if the user is currently following the target user
     const existingRelation = await followCol.findOne({
       followerId,
       followedId,
@@ -326,7 +322,6 @@ app.post('/unfollow-user', async (req, res) => {
       return res.send({ Status: 'error', data: 'Not following this user' });
     }
 
-    // Remove the follow relationship
     await followCol.deleteOne({ _id: existingRelation._id });
 
     res.status(201).send({ Status: 'success', data: 'User unfollowed successfully' });
@@ -402,9 +397,8 @@ app.get('/posts-by-uids-loc', async (req, res) => {
         };
       }
 
-      // Find posts where the uid is in the list of uids
       let posts = await postsCol.find(findDict);
-      allPosts.concat(posts);
+      allPosts = [...allPosts, ...posts];
     }
 
     res.status(201).send({ Status: 'success', data: allPosts });
