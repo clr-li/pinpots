@@ -401,7 +401,7 @@ app.get('/posts-by-uids-loc', async (req, res) => {
       allPosts = [...allPosts, ...posts];
     }
 
-    const postUids = posts.map(post => post.uid);
+    const postUids = allPosts.map(post => post.uid);
 
     const users = await userCol.find({
       _id: { $in: postUids },
