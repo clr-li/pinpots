@@ -367,12 +367,10 @@ app.get('/posts-by-uids', async (req, res) => {
         findDict = { uid: uid, visibility: { $in: ['Public', 'Friends'] } };
       }
 
-      // Find posts where the uid is in the list of uids
-      let posts = await postsCol.find(findDict);
-      allPosts.concat(posts);
+      allPosts.concat(await postsCol.find(findDict));
     }
 
-    res.status(201).send({ Status: 'success', data: posts, allPosts: allPosts });
+    res.status(201).send({ Status: 'success', data: allPosts });
   } catch (e) {
     res.send({ Status: 'error', data: e.message });
   }
