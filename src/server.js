@@ -367,7 +367,8 @@ app.get('/posts-by-uids', async (req, res) => {
         findDict = { uid: uid, visibility: { $in: ['Public', 'Friends'] } };
       }
 
-      allPosts.concat(await postsCol.find(findDict));
+      let posts = await postsCol.find(findDict);
+      allPosts = [...allPosts, ...posts];
     }
 
     res.status(201).send({ Status: 'success', data: allPosts });
