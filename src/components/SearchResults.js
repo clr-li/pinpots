@@ -41,7 +41,7 @@ const SearchResults = ({ searchResults, handleFollowUser, handleSendFriendReques
             console.log('delete requesterID', userInfo.id);
             console.log('delete requestedId', user._id);
             // Fetch friend request status
-            const friendRequestResponse = await axios.get(`${HOSTNAME}/send-friend-request`, {
+            const friendRequestResponse = await axios.post(`${HOSTNAME}/send-friend-request`, {
               params: {
                 requesterId: userInfo.id,
                 requestedId: user._id,
