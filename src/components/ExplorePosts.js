@@ -143,7 +143,7 @@ function ExplorePosts(props) {
             />
           </div>
           <div className="post-date">
-            {formatDate(data.uploadDate)} @{data.username || username}
+            {formatDate(data.uploadDate)} @{data.username || paramUsername}
           </div>
           {data.text && <div className="post-caption">{truncateCaption(data.text)}</div>}
           <div className="post-likes">
