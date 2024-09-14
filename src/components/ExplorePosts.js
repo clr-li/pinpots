@@ -41,12 +41,12 @@ function ExplorePosts(props) {
             });
             postsData = res.data.data;
           } else {
-            res = await axios.get(`${HOSTNAME}/get-posts-by-uids-loc`, {
+            res = await axios.get(`${HOSTNAME}/posts-by-uids-loc`, {
               params: {
                 uids: uids,
                 lat: selectPosition.lat,
                 lon: selectPosition.lon,
-                visibility: postVisibility.PUBLIC,
+                requesterId: userInfo.id,
               },
             });
             postsData = res.data.posts;

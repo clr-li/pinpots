@@ -372,37 +372,43 @@ app.get('/posts-by-uids', async (req, res) => {
       allPosts.concat(posts);
     }
 
-    res.status(201).send({ Status: 'success', data: allPosts });
+    res.status(201).send({ Status: 'success', data: posts, allPosts: allPosts });
   } catch (e) {
     res.send({ Status: 'error', data: e.message });
   }
 });
 
 // Get posts and usernames by a list of uids, location, and visibility
-app.get('/get-posts-by-uids-loc', async (req, res) => {
-  const { uids, lat, lon, visibility } = req.query;
+app.get('/posts-by-uids-loc', async (req, res) => {
+  const { uids, lat, lon, requesterId } = req.query;
 
   try {
-    const posts = await postsCol.find({
-      uid: { $in: uids },
-      'location.lat': lat,
-      'location.lon': lon,
-      visibility: visibility,
-    });
+    let allPosts = [];
+    for (const uid of uids) {
+      let friends = await friendCol.findOne({
+        status: 'Friends',
+        $or: [
+          { requesterId: requesterId, requestedId: uid },
+          { requesterId: uid, requestedId: requesterId },
+        ],
+      });
 
-    const postUids = posts.map(post => post.uid);
+      let findDict = { uid: uid, 'location.lat': lat, 'location.lon': lon, visibility: 'Public' };
+      if (friends) {
+        findDict = {
+          uid: uid,
+          'location.lat': lat,
+          'location.lon': lon,
+          visibility: { $in: ['Public', 'Friends'] },
+        };
+      }
 
-    const users = await userCol.find({
-      _id: { $in: postUids },
-    });
+      // Find posts where the uid is in the list of uids
+      let posts = await postsCol.find(findDict);
+      allPosts.concat(posts);
+    }
 
-    // Transform users array into a map from id to username
-    const userMap = users.reduce((acc, user) => {
-      acc[user._id.toString()] = user.username;
-      return acc;
-    }, {});
-
-    res.status(201).send({ Status: 'success', posts: posts, users: userMap });
+    res.status(201).send({ Status: 'success', data: allPosts });
   } catch (e) {
     res.send({ Status: 'error', data: e.message });
   }
