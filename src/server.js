@@ -515,8 +515,10 @@ app.get('/friend-status', async (req, res) => {
   try {
     // Check if the users are friends
     const friends = await friendCol.findOne({
-      requesterId: requesterId,
-      requestedId: requestedId,
+      $or: [
+        { requesterId: requesterId, requestedId: requestedId },
+        { requesterId: requestedId, requestedId: requesterId },
+      ],
     });
 
     if (friends) {

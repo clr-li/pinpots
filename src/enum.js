@@ -2,7 +2,7 @@
 const postVisibility = Object.freeze({
   PRIVATE: 'private',
   PUBLIC: 'public',
-  // FRIENDS: 'friends',
+  FRIENDS: 'friends',
 });
 
 export { postVisibility };
