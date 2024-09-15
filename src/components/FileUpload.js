@@ -129,7 +129,7 @@ function FileUploader(props) {
 
   return selectPosition ? (
     <div className="file-uploader">
-      <h2>2. Upload Image</h2>
+      <h2 className="center-h2">2. Upload Image</h2>
       <input type="file" accept="image/*" onChange={convertToBase64} />
       {image && <img src={image} alt="Preview" />}
       <button className="save-image" onClick={saveImageToState}>

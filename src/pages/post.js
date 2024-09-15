@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import FileUploader from '../components/FileUpload';
 import PostDetails from '../components/PostDetails';
 import '../styles/map.css';
+import '../styles/uploader.css';
 
 function PostPage() {
   const [selectPosition, setSelectPosition] = useState(null);
@@ -19,7 +20,7 @@ function PostPage() {
           <Maps selectPosition={selectPosition} />
         </div>
         <div className="half-container">
-          <h2>1. Search and Select a Location</h2>
+          <h2 className="center-h2">1. Search and Select a Location</h2>
           <SearchBox selectPosition={selectPosition} setSelectPosition={setSelectPosition} />
           <FileUploader selectPosition={selectPosition} setPostImage={setPostImage} />
           <PostDetails postImage={postImage} />

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PopupMessage from './PopupMessage';
 import '../styles/posts.css';
+import '../styles/uploader.css';
 import { postVisibility } from '../enum';
 import { getUserFromToken } from '../auth';
 import { HOSTNAME } from '../constants';
@@ -73,7 +74,7 @@ function PostDetails(props) {
 
   return (
     <div className="post-settings">
-      <h2>3. Post Details</h2>
+      <h2 className="center-h2">3. Post Details</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="caption">Caption (Optional):</label>
