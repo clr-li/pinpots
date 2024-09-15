@@ -1,3 +1,4 @@
+// Filename: SearchResults.js
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -58,22 +59,6 @@ const SearchResults = ({ searchResults, handleFollowUser, handleSendFriendReques
     fetchFollowerCounts();
   }, [searchResults]);
 
-  const handleSendRequest = async userId => {
-    try {
-      // Send the friend request and get the updated status (e.g., 'Requested', 'Friends', etc.)
-      const response = await handleSendFriendRequest(userId);
-      const updatedStatus = response.data.status; // Assuming the response contains the new status
-
-      // Update the friendRequests state with the new status
-      setFriendRequests(prevState => ({
-        ...prevState,
-        [userId]: updatedStatus, // Use the actual status returned by the API
-      }));
-    } catch (error) {
-      console.error('Error sending friend request:', error);
-    }
-  };
-
   return (
     <div className="search-results">
       {searchResults.length !== 0 &&
@@ -89,7 +74,9 @@ const SearchResults = ({ searchResults, handleFollowUser, handleSendFriendReques
               {userFollows[user._id] ? 'Unfollow' : 'Follow'}
             </button>
 
-            <button onClick={() => handleSendRequest(user._id)}>{friendRequests[user._id]}</button>
+            <button onClick={() => handleSendFriendRequest(user._id)}>
+              {friendRequests[user._id]}
+            </button>
           </div>
         ))}
     </div>

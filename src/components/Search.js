@@ -1,10 +1,9 @@
-// Filename: Search.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../styles/search.css'; // Include any styles you need
+import '../styles/search.css';
 import { useNavigate } from 'react-router-dom';
 import { getUserFromToken } from '../auth';
-import SearchResults from './SearchResults'; // Import the new component
+import SearchResults from './SearchResults';
 import { HOSTNAME } from '../constants';
 
 function Search() {
@@ -29,12 +28,9 @@ function Search() {
 
   const handleSearchSubmit = async e => {
     e.preventDefault();
-
     try {
       const response = await axios.get(`${HOSTNAME}/search-users`, {
-        params: {
-          search: searchTerm,
-        },
+        params: { search: searchTerm },
       });
 
       if (response.status === 201) {
@@ -60,7 +56,6 @@ function Search() {
 
       if (res.status === 201) {
         setMessage({ text: 'Followed successfully!', type: 'success' });
-        // Update the follower count in search results
         updateFollowerCount(followedId, 1);
       } else {
         const unfollowRes = await axios.post(`${HOSTNAME}/unfollow-user`, {
@@ -91,7 +86,11 @@ function Search() {
       });
 
       if (res.status === 200 || res.status === 201 || res.status === 202) {
+        const updatedStatus = res.data.status; // Assuming the response contains the status of the friend request
         setMessage({ text: res.data.message, type: 'success' });
+
+        // Update friend request status in the search results
+        updateFriendRequestStatus(requestedId, updatedStatus);
       } else {
         setMessage({ text: res.data.message, type: 'error' });
       }
@@ -105,6 +104,14 @@ function Search() {
     setSearchResults(prevResults =>
       prevResults.map(user =>
         user._id === userId ? { ...user, followerCount: user.followerCount + increment } : user,
+      ),
+    );
+  };
+
+  const updateFriendRequestStatus = (userId, status) => {
+    setSearchResults(prevResults =>
+      prevResults.map(user =>
+        user._id === userId ? { ...user, friendRequestStatus: status } : user,
       ),
     );
   };
@@ -130,7 +137,7 @@ function Search() {
       <SearchResults
         searchResults={searchResults}
         handleFollowUser={handleFollowUser}
-        handleSendFriendRequest={handleSendFriendRequest} // Pass the friend request handler
+        handleSendFriendRequest={handleSendFriendRequest}
         updateFollowerCount={updateFollowerCount}
       />
     </div>
