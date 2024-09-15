@@ -60,10 +60,14 @@ const SearchResults = ({ searchResults, handleFollowUser, handleSendFriendReques
 
   const handleSendRequest = async userId => {
     try {
-      await handleSendFriendRequest(userId);
+      // Send the friend request and get the updated status (e.g., 'Requested', 'Friends', etc.)
+      const response = await handleSendFriendRequest(userId);
+      const updatedStatus = response.data.status; // Assuming the response contains the new status
+
+      // Update the friendRequests state with the new status
       setFriendRequests(prevState => ({
         ...prevState,
-        [userId]: 'Requested', // Update the button text to 'Requested' after sending the request
+        [userId]: updatedStatus, // Use the actual status returned by the API
       }));
     } catch (error) {
       console.error('Error sending friend request:', error);
