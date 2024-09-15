@@ -7,7 +7,6 @@ import '../styles/popup.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { useLocation } from 'react-router-dom';
-import { postVisibility } from '../enum';
 import { HOSTNAME } from '../constants';
 
 function ExplorePosts(props) {
@@ -62,7 +61,7 @@ function ExplorePosts(props) {
             );
             setLikedPosts(likedPostsSet);
           } else {
-            console.log('Failed to fetch posts');
+            console.log('Failed to fetch posts', res);
           }
         }
       } catch (error) {

@@ -30,7 +30,7 @@ function MyPosts(props) {
           if (res.status === 201) {
             setPosts(res.data.data);
           } else {
-            console.log('Failed to fetch posts', res.status);
+            console.log('Failed to fetch posts', res);
           }
         }
       } catch (error) {
@@ -56,8 +56,8 @@ function MyPosts(props) {
         return 'Public';
       case postVisibility.PRIVATE:
         return 'Private';
-      case postVisibility.FRIENDS_ONLY:
-        return 'Friends Only';
+      case postVisibility.FRIENDS:
+        return 'Friends';
       default:
         return 'Unknown';
     }

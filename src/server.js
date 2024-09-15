@@ -189,10 +189,10 @@ app.get('/get-posts-by-loc', async (req, res) => {
   try {
     await postsCol
       .find(findDict)
+      .sort({ uploadDate: -1 })
       .then(data => {
         res.status(201).send({ status: 'success', data: data });
-      })
-      .sort({ uploadDate: -1 });
+      });
   } catch (e) {
     res.send({ Status: 'error', data: e });
   }
