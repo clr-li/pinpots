@@ -187,9 +187,12 @@ app.get('/get-posts-by-loc', async (req, res) => {
   }
 
   try {
-    await postsCol.find(findDict).then(data => {
-      res.status(201).send({ status: 'success', data: data });
-    });
+    await postsCol
+      .find(findDict)
+      .then(data => {
+        res.status(201).send({ status: 'success', data: data });
+      })
+      .sort({ uploadDate: -1 });
   } catch (e) {
     res.send({ Status: 'error', data: e });
   }
@@ -228,9 +231,12 @@ app.get('/posts-by-username-loc', async (req, res) => {
       };
     }
 
-    await postsCol.find(findDict).then(data => {
-      res.status(201).send({ Status: 'success', data: data });
-    });
+    await postsCol
+      .find(findDict)
+      .sort({ uploadDate: -1 })
+      .then(data => {
+        res.status(201).send({ Status: 'success', data: data });
+      });
   } catch (e) {
     res.send({ Status: 'error', data: e });
   }
@@ -397,7 +403,7 @@ app.get('/posts-by-uids-loc', async (req, res) => {
         };
       }
 
-      let posts = await postsCol.find(findDict);
+      let posts = await postsCol.find(findDict).sort({ uploadDate: -1 });
       allPosts = [...allPosts, ...posts];
     }
 
@@ -465,12 +471,14 @@ app.get('/top-posts-by-loc', async (req, res) => {
   const { lat, lon } = req.query;
 
   try {
-    const posts = await postsCol.find({
-      visibility: 'Public', // TODO: use enum
-      'location.lat': lat,
-      'location.lon': lon,
-      $expr: { $gte: [{ $size: '$likes' }, TOP_POST_LIKES_THRESHOLD] },
-    });
+    const posts = await postsCol
+      .find({
+        visibility: 'Public', // TODO: use enum
+        'location.lat': lat,
+        'location.lon': lon,
+        $expr: { $gte: [{ $size: '$likes' }, TOP_POST_LIKES_THRESHOLD] },
+      })
+      .sort({ uploadDate: -1 });
 
     const postUids = posts.map(post => post.uid);
 
