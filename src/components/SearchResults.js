@@ -1,4 +1,3 @@
-// Filename: SearchResults.js
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -59,6 +58,18 @@ const SearchResults = ({ searchResults, handleFollowUser, handleSendFriendReques
     fetchFollowerCounts();
   }, [searchResults]);
 
+  const handleSendRequest = async userId => {
+    try {
+      await handleSendFriendRequest(userId);
+      setFriendRequests(prevState => ({
+        ...prevState,
+        [userId]: 'Requested', // Update the button text to 'Requested' after sending the request
+      }));
+    } catch (error) {
+      console.error('Error sending friend request:', error);
+    }
+  };
+
   return (
     <div className="search-results">
       {searchResults.length !== 0 &&
@@ -74,8 +85,12 @@ const SearchResults = ({ searchResults, handleFollowUser, handleSendFriendReques
               {userFollows[user._id] ? 'Unfollow' : 'Follow'}
             </button>
 
-            <button onClick={() => handleSendFriendRequest(user._id)}>
-              {friendRequests[user._id]}
+            <button onClick={() => handleSendRequest(user._id)}>
+              {friendRequests[user._id] === 'Friends'
+                ? 'Friends'
+                : friendRequests[user._id] === 'Requested'
+                  ? 'Requested'
+                  : 'Send Friend Request'}
             </button>
           </div>
         ))}
