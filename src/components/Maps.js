@@ -48,7 +48,7 @@ function Maps(props) {
               click: () => onMarkerClick(loc),
             }}
           >
-            <Popup>{`Location: ${loc.name}`}</Popup>
+            <Popup>{`${loc.name}`}</Popup>
           </Marker>
         ))}
 

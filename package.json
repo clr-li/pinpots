@@ -39,7 +39,8 @@
     "start": "react-dotenv && nodemon server.js",
     "build": "npm install && react-dotenv && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "react-dotenv && react-scripts start && nodemon server.js"
   },
   "main": "./src/server.js",
   "eslintConfig": {
