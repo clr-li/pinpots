@@ -7,6 +7,7 @@ import { getUserFromToken } from '../auth';
 import '../styles/search.css'; // Include any styles you need
 import { useNavigate } from 'react-router-dom';
 import { HOSTNAME } from '../constants';
+import UserInfo from './UserInfo';
 
 const SearchResults = ({ searchResults, handleFollowUser, handleSendFriendRequest }) => {
   const [followedUsers, setFollowedUsers] = useState([]);
@@ -64,7 +65,10 @@ const SearchResults = ({ searchResults, handleFollowUser, handleSendFriendReques
       {searchResults.length !== 0 &&
         searchResults.map(user => (
           <div key={user._id} className="user-info">
-            <Link to={`/explore.html?username=${user.username}`}>@{user.username}</Link>
+            <Link to={`/explore.html?username=${user.username}`}>
+              @{user.username}
+              <UserInfo username={user.username} />
+            </Link>
             <span className="follower-count">
               {followedUsers[user._id] !== undefined
                 ? `${followedUsers[user._id].length} ${followedUsers[user._id].length === 1 ? 'follower' : 'followers'}`
