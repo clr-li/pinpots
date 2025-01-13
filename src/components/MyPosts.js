@@ -1,3 +1,4 @@
+// Filename - MyPosts.js
 import React, { useState, useEffect } from 'react';
 import { getUserFromToken } from '../auth';
 import axios from 'axios';

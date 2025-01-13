@@ -12,7 +12,7 @@ const friendCol = require('./db/friend');
 const path = require('path');
 const levenshtein = require('js-levenshtein');
 require('dotenv').config();
-const { TOP_POST_LIKES_THRESHOLD } = require('./constants');
+const { TOP_POST_LIKES_THRESHOLD, VERIFIED_USERNAME } = require('./constants');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -628,6 +628,40 @@ app.get('/friend-status', async (req, res) => {
   }
 });
 
+// Check if the user is verified by checking if they are followed by @verified
+app.get('/check-verified', async (req, res) => {
+  const { username } = req.query;
+
+  // Validate input
+  if (!username) {
+    return res.status(400).send({ Status: 'Error', message: 'Missing username parameter' });
+  }
+
+  try {
+    // Find the "verified" user
+    const verifiedUser = await userCol.findOne({ username: VERIFIED_USERNAME });
+
+    const checkingUser = await userCol.findOne({ username: username });
+
+    if (!verifiedUser) {
+      return res.status(404).send({ Status: 'Error', message: '"verified" user not found' });
+    }
+
+    // Check if the verified user follows the provided userId
+    const isVerified = await followCol.findOne({
+      followerId: verifiedUser.id,
+      followedId: checkingUser.id,
+    });
+    if (isVerified) {
+      return res.status(200).send({ isVerified: true });
+    } else {
+      return res.status(200).send({ isVerified: false });
+    }
+  } catch (e) {
+    console.error('Error checking verification status:', e.message);
+    res.status(500).send({ Status: 'Error', message: e.message });
+  }
+});
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
