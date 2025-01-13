@@ -1,17 +1,13 @@
-// Filename - Maps.js
+// components/Maps.js
 import React, { useEffect } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import markerIcon from '../assets/logopn.png'; // Update the path based on your structure
 
 const locIcon = L.icon({
-  iconUrl: './marker.png',
+  iconUrl: markerIcon,
   iconSize: [38, 38],
-});
-
-const hereIcon = L.icon({
-  iconUrl: './here.png',
-  iconSize: [25.3951219512, 38],
 });
 
 const position = [47.6144219, -122.192337];
@@ -22,9 +18,13 @@ function ResetCenterView(props) {
 
   useEffect(() => {
     if (selectPosition) {
-      map.setView(L.latLng(selectPosition?.lat, selectPosition?.lon), map.getZoom(), {
-        animate: true,
-      });
+      map.setView(
+        L.latLng(selectPosition?.lat, selectPosition?.lon),
+        map.getZoom(),
+        {
+          animate: true,
+        }
+      );
     }
   }, [selectPosition, map]);
 
@@ -36,8 +36,16 @@ function Maps(props) {
   const locationSelection = [selectPosition?.lat, selectPosition?.lon];
 
   return (
-    <MapContainer center={position} zoom={8} style={{ width: '100%', height: '100%' }}>
-      <TileLayer attribution="" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+    <MapContainer
+      center={position}
+      zoom={8}
+      className="w-full h-full"
+      zoomControl={false}
+    >
+      <TileLayer
+        attribution=""
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
       {locations &&
         locations.map((loc, index) => (
           <Marker
@@ -53,7 +61,7 @@ function Maps(props) {
         ))}
 
       {selectPosition && (
-        <Marker position={locationSelection} icon={hereIcon}>
+        <Marker position={locationSelection} icon={locIcon}>
           <Popup>{locationSelection}</Popup>
         </Marker>
       )}
