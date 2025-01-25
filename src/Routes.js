@@ -6,6 +6,7 @@ import MapPage from './pages/map';
 import Upload from './pages/post';
 import SearchPage from './pages/search';
 import ExplorePage from './pages/explore';
+import TripPage from './pages/trip';
 
 export const Routers = () => {
   return (
@@ -18,6 +19,7 @@ export const Routers = () => {
         <Route path="/post.html" element={<Upload />} />
         <Route path="/login.html" element={<LoginPage />} />
         <Route path="/search.html" element={<SearchPage />} />
+        <Route path="/trip.html" element={<TripPage />} />
       </Routes>
     </Router>
   );
