@@ -51,6 +51,10 @@ app.get('/search.html', (req, res) => {
   res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
+app.get('/trip.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
+
 // Helper function to generate JWT
 function generateToken(user) {
   return jwt.sign({ id: user._id, username: user.username, email: user.email }, JWT_SECRET, {
