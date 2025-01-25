@@ -142,7 +142,7 @@ app.post('/upload-multiple-posts', async (req, res) => {
   const { uid, img, text, location, visibility, takenDate, locNum, tripId } = req.body;
 
   console.log('Received post:', req.body);
-  console.log('locNum:', index);
+  console.log('locNum:', locNum);
 
   try {
     await postsCol.create({
