@@ -91,7 +91,11 @@ function ExplorePage() {
           <UserProfile />
           <UserDetails username={userState}></UserDetails>
           <SearchBox selectPosition={selectPosition} setSelectPosition={setSelectPosition} />
-          <ExplorePosts selectPosition={selectPosition} uids={uids} />
+          <ExplorePosts
+            setSelectPosition={setSelectPosition}
+            selectPosition={selectPosition}
+            uids={uids}
+          />
         </div>
       </div>
     </React.StrictMode>

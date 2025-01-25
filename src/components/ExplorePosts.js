@@ -14,7 +14,7 @@ function ExplorePosts(props) {
   const [selectedPost, setSelectedPost] = useState(null);
   const [paramUsername, setParamUsername] = useState('');
   const [likedPosts, setLikedPosts] = useState(new Set()); // Track liked posts
-  const { selectPosition, uids } = props;
+  const { setSelectPosition, selectPosition, uids } = props;
   const location = useLocation();
 
   useEffect(() => {
@@ -129,6 +129,28 @@ function ExplorePosts(props) {
     }
   };
 
+  const goToNextPost = async () => {
+    if (!selectedPost || !selectedPost.tripId) return;
+
+    const res = await axios.get(`${HOSTNAME}/posts-by-uid`, {
+      params: { uid: selectedPost.uid },
+    });
+
+    if (res.status === 201) {
+      const userPosts = res.data.data;
+      const nextPostIndex = userPosts.findIndex(post => post._id === selectedPost._id) + 1;
+
+      if (nextPostIndex < userPosts.length) {
+        setSelectedPost(userPosts[nextPostIndex]);
+        setSelectPosition(userPosts[nextPostIndex].location);
+      } else {
+        setSelectedPost(userPosts[0]);
+      }
+    } else {
+      console.log('Failed to fetch posts by username', res.status);
+    }
+  };
+
   return (
     <div className="posts-grid">
       {posts.map((data, index) => (
@@ -167,6 +189,11 @@ function ExplorePosts(props) {
               {formatDate(selectedPost.uploadDate)} @{selectedPost.username || paramUsername}
             </div>
             <div className="popup-caption">{selectedPost.text}</div>
+            {selectedPost.tripId && (
+              <button className="search-button" onClick={goToNextPost}>
+                Go to Next Post in Trip
+              </button>
+            )}
             <button className="close-popup" onClick={closePopup}>
               <FontAwesomeIcon icon={faCircleXmark} />
             </button>
