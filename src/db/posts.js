@@ -4,6 +4,14 @@ const { Schema } = mongoose;
 
 const postSchema = new Schema(
   {
+    tripId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
+    },
+    locNum: {
+      type: Number,
+      required: false,
+    },
     uid: {
       type: String,
       required: true,

@@ -139,3 +139,32 @@
   background-color: #0056b3;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* PhotoSelect */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.image-item {
+  text-align: center;
+}
+
+.uploaded-image {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+}
+
+.location-assignment {
+  margin-top: 10px;
+}
+
+.location-assignment input {
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+}
