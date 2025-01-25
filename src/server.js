@@ -138,6 +138,29 @@ app.post('/upload-post', async (req, res) => {
   }
 });
 
+app.post('/upload-multiple-posts', async (req, res) => {
+  const { uid, img, text, location, visibility, takenDate, locNum, tripId } = req.body;
+
+  console.log('Received post:', req.body);
+  console.log('locNum:', index);
+
+  try {
+    await postsCol.create({
+      uid,
+      img,
+      text,
+      location,
+      visibility,
+      takenDate,
+      locNum,
+      tripId,
+    });
+    res.status(201).json('success');
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
+});
+
 // Delete post
 app.delete('/delete-post/', async (req, res) => {
   const { postId } = req.query; // Extract postId from URL parameters
