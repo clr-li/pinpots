@@ -11,7 +11,6 @@ import axios from 'axios';
 import SearchBox from '../components/SearchBox';
 import { useLocation } from 'react-router-dom';
 import ExplorePosts from '../components/ExplorePosts';
-import { postVisibility } from '../enum';
 import UserDetails from '../components/UserDetails';
 import { HOSTNAME } from '../constants';
 

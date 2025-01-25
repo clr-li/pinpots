@@ -60,7 +60,6 @@ function MultiPostDetails({ postImages, imageLocations }) {
       }
 
       try {
-        console.log('Posting:', postData);
         const response = await axios.post(`${HOSTNAME}/upload-multiple-posts/`, postData);
 
         if (response.status === 201) {

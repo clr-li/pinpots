@@ -141,9 +141,6 @@ app.post('/upload-post', async (req, res) => {
 app.post('/upload-multiple-posts', async (req, res) => {
   const { uid, img, text, location, visibility, takenDate, locNum, tripId } = req.body;
 
-  console.log('Received post:', req.body);
-  console.log('locNum:', locNum);
-
   try {
     await postsCol.create({
       uid,
@@ -366,6 +363,19 @@ app.get('/get-followed-uids', async (req, res) => {
     await followCol.find({ followerId: uid }).then(data => {
       res.status(201).send({ Status: 'success', data: data });
     });
+  } catch (e) {
+    res.send({ Status: 'error', data: e.message });
+  }
+});
+
+// Gets all posts by a uid
+app.get('/posts-by-uid', async (req, res) => {
+  const { uid } = req.query;
+
+  try {
+    const allPosts = await postsCol.find({ uid: uid });
+
+    res.status(201).send({ Status: 'success', data: allPosts });
   } catch (e) {
     res.send({ Status: 'error', data: e.message });
   }

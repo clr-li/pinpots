@@ -8,6 +8,7 @@ import '../styles/search.css';
 import PhotoSelector from '../components/PhotoSelect';
 import SearchBox from '../components/SearchBox';
 
+// TODO: refactor to fully use standard format for /pages
 function TripPage() {
   const [selectPosition, setSelectPosition] = useState(null);
   const [postImages, setPostImages] = useState([]); // Store multiple selected images

@@ -12,7 +12,7 @@ import { HOSTNAME } from '../constants';
 function MyPosts(props) {
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
-  const { selectPosition } = props;
+  const { setSelectPosition, selectPosition } = props;
 
   useEffect(() => {
     async function fetchData() {
@@ -44,7 +44,7 @@ function MyPosts(props) {
 
   const formatDate = timestamp => {
     const date = new Date(timestamp);
-    return date.toLocaleDateString(); // Format date as needed
+    return date.toLocaleDateString();
   };
 
   const truncateCaption = caption => {
@@ -89,6 +89,34 @@ function MyPosts(props) {
     }
   };
 
+  const goToNextPost = async () => {
+    if (!selectedPost || !selectedPost.tripId) return;
+
+    // Get all posts with the same tripId
+    const tripPosts = posts.filter(post => post.tripId === selectedPost.tripId);
+
+    // use posts-by-username endpoint to get all posts by the user
+    const res = await axios.get(`${HOSTNAME}/posts-by-uid`, {
+      params: { uid: selectedPost.uid },
+    });
+
+    console.log(res);
+
+    if (res.status === 201) {
+      const userPosts = res.data.data;
+      const nextPostIndex = userPosts.findIndex(post => post._id === selectedPost._id) + 1;
+
+      if (nextPostIndex < userPosts.length) {
+        setSelectedPost(userPosts[nextPostIndex]);
+        setSelectPosition(userPosts[nextPostIndex].location);
+      } else {
+        setSelectedPost(userPosts[0]);
+      }
+    } else {
+      console.log('Failed to fetch posts by username', res.status);
+    }
+  };
+
   return (
     <div className="posts-grid">
       {posts.map((data, index) => (
@@ -98,7 +126,7 @@ function MyPosts(props) {
               className="post-img"
               src={data.img}
               alt="a post"
-              onClick={() => handleImageClick(data)} // Handle click to open popup
+              onClick={() => handleImageClick(data)}
             />
           </div>
           <div className="post-date">{formatDate(data.uploadDate)}</div>
@@ -124,6 +152,11 @@ function MyPosts(props) {
             </div>
             <img className="popup-img" src={selectedPost.img} alt="Selected Post" />
             <div className="popup-caption">{selectedPost.text}</div>
+            {selectedPost.tripId && (
+              <button className="next-post-btn" onClick={goToNextPost}>
+                Go to Next Post in Trip
+              </button>
+            )}
             <button className="close-popup" onClick={closePopup}>
               <FontAwesomeIcon icon={faCircleXmark} />
             </button>

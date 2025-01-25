@@ -65,7 +65,7 @@ function MapPage() {
         <div className="half-container">
           <UserProfile />
           <SearchBox selectPosition={selectPosition} setSelectPosition={setSelectPosition} />
-          <MyPosts selectPosition={selectPosition} />
+          <MyPosts selectPosition={selectPosition} setSelectPosition={setSelectPosition} />
         </div>
       </div>
     </React.StrictMode>
