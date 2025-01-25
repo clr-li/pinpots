@@ -92,15 +92,10 @@ function MyPosts(props) {
   const goToNextPost = async () => {
     if (!selectedPost || !selectedPost.tripId) return;
 
-    // Get all posts with the same tripId
-    const tripPosts = posts.filter(post => post.tripId === selectedPost.tripId);
-
     // use posts-by-username endpoint to get all posts by the user
     const res = await axios.get(`${HOSTNAME}/posts-by-uid`, {
       params: { uid: selectedPost.uid },
     });
-
-    console.log(res);
 
     if (res.status === 201) {
       const userPosts = res.data.data;
@@ -153,7 +148,7 @@ function MyPosts(props) {
             <img className="popup-img" src={selectedPost.img} alt="Selected Post" />
             <div className="popup-caption">{selectedPost.text}</div>
             {selectedPost.tripId && (
-              <button className="next-post-btn" onClick={goToNextPost}>
+              <button className="search-button" onClick={goToNextPost}>
                 Go to Next Post in Trip
               </button>
             )}
