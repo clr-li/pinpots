@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const postSchema = new Schema(
   {
     tripId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: false,
     },
     locNum: {

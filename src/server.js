@@ -152,8 +152,8 @@ app.post('/upload-multiple-posts', async (req, res) => {
       location,
       visibility,
       takenDate,
-      locNum,
-      tripId,
+      // locNum,
+      // tripId,
     });
     res.status(201).json('success');
   } catch (e) {
