@@ -15,6 +15,7 @@ function MainNavbar() {
             <Nav.Link href="/search.html">Search</Nav.Link>
             <Nav.Link href="/mymap.html">MyMap</Nav.Link>
             <Nav.Link href="/post.html">Post</Nav.Link>
+            <Nav.Link href="/trip.html">Trip</Nav.Link>
           </Nav>
           <Nav>
             <Nav.Link href="/login.html">Login</Nav.Link>
