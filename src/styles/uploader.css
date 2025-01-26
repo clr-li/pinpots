@@ -168,3 +168,40 @@
   padding: 5px;
   margin-top: 5px;
 }
+
+/* uploader.css */
+.upload-section {
+  padding: 20px;
+  border-radius: 12px;
+  background: white;
+}
+
+.file-input-label {
+  display: inline-block;
+  padding: 12px 24px;
+  background: var(--primary-orange);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.file-input-label:hover {
+  background: #e66a43;
+}
+
+.file-input {
+  display: none;
+}
+
+.image-preview {
+  margin-top: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
