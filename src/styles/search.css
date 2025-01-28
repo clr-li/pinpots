@@ -1,150 +1,150 @@
 .search-box-wrapper {
-    padding-left: 5px;
-    padding-right: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .search-box-container {
-    flex-direction: column;
-    display: flex;
-    align-items: center;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
 }
 
 .search-input {
-    flex: 1;
-    width: calc(100% - 85px);
-    padding: 10px; /* Add padding to ensure text doesn't touch edges */
-    box-sizing: border-box; /* Ensure padding is included in height */
-    margin-right: 10px;
-    flex: 1;
-    height: 40px; /* Match the button height */
-    padding: 10px; /* Ensure text doesn't touch edges */
-    border: 1px solid #ddd; /* Add border for consistency */
-    border-radius: 5px; /* Rounded corners for consistency */
+  flex: 1;
+  width: calc(100% - 85px);
+  padding: 10px; /* Add padding to ensure text doesn't touch edges */
+  box-sizing: border-box; /* Ensure padding is included in height */
+  margin-right: 10px;
+  flex: 1;
+  height: 40px; /* Match the button height */
+  padding: 10px; /* Ensure text doesn't touch edges */
+  border: 1px solid #ddd; /* Add border for consistency */
+  border-radius: 5px; /* Rounded corners for consistency */
 }
 
 .list-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
 }
 
 /* SearchPage */
 .search-container {
-    padding: 20px;
-    max-width: 800px;
-    margin: auto;
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
 }
 
 .search-form {
-    display: inline;
-    align-items: center;
-    width: 100%;
+  display: inline;
+  align-items: center;
+  width: 100%;
 }
 
 .search-button {
-    padding: 8px 12px;
-    border: none;
-    background: #007bff;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 8px 12px;
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .search-form button:hover {
-    background: #0056b3;
+  background: #0056b3;
 }
 
 .message {
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    font-weight: bold;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-weight: bold;
 }
 
 .message.success {
-    background: #d4edda;
-    color: #155724;
+  background: #d4edda;
+  color: #155724;
 }
 
 .message.error {
-    background: #f8d7da;
-    color: #721c24;
+  background: #f8d7da;
+  color: #721c24;
 }
 
 .search-results {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .user-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
 .user-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .user-info__username {
-    font-weight: bold;
-    color: #333;
-    text-decoration: none;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
 }
 
 .user-info__follow-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
 }
 
 .user-info__follow-button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 .user-info button {
-    padding: 5px 10px;
-    border: none;
-    background: #28a745;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 5px 10px;
+  border: none;
+  background: #28a745;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .user-info button:hover {
-    background: #218838;
+  background: #218838;
 }
 
 .user-info a {
-    color: #007bff; /* Set the link color */
-    text-decoration: none; /* Remove underline */
-    font-weight: bold; /* Make the text bold */
-    transition: color 0.3s ease; /* Add a smooth transition for color change */
+  color: #007bff; /* Set the link color */
+  text-decoration: none; /* Remove underline */
+  font-weight: bold; /* Make the text bold */
+  transition: color 0.3s ease; /* Add a smooth transition for color change */
 }
 
 .user-info a:hover {
-    color: #0056b3; /* Darker shade on hover */
-    text-decoration: underline; /* Underline the link on hover */
+  color: #0056b3; /* Darker shade on hover */
+  text-decoration: underline; /* Underline the link on hover */
 }
 
 .user-info a:active {
-    color: #004085; /* Even darker shade when the link is active/clicked */
+  color: #004085; /* Even darker shade when the link is active/clicked */
 }
 
 .user-info-text {
-    font-size: 0.8rem;
-    color: #333;
-    margin: 0;
+  font-size: 0.8rem;
+  color: #333;
+  margin: 0;
 }
