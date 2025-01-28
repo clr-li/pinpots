@@ -5,6 +5,56 @@
   padding: 0 1rem;
 }
 
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.post-container {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.square-image-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%; /* 1:1 aspect ratio */
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.post-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.post-img:hover {
+  transform: scale(1.05);
+}
+
+.post-date {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.post-caption {
+  margin-top: 8px;
+  font-size: 1rem;
+  color: #333;
+  white-space: pre-wrap; /* Handle line breaks */
+  text-align: left;
+  padding: 3px;
+}
+
 .step {
   background: white;
   border-radius: 12px;
