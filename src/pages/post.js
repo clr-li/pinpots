@@ -57,7 +57,7 @@ function PostPage() {
         uploadDate: Date.now(),
       };
 
-      const res = await axios.post(`${HOSTNAME}/create-post`, postData);
+      const res = await axios.post(`${HOSTNAME}/upload-post`, postData);
 
       if (res.status === 201) {
         alert('Post created successfully!');
