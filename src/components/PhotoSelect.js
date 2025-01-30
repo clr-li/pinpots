@@ -1,40 +1,28 @@
-// Filename: PhotoSelect.js
-import React, { useState, useEffect } from 'react';
-import PopupMessage from './PopupMessage';
-import { getUserFromToken } from '../auth';
+import React, { useState } from 'react';
 import '../styles/uploader.css';
-import { useNavigate } from 'react-router-dom';
-import { postVisibility } from '../enum';
+import PopupMessage from './PopupMessage';
 
-function PhotoSelector(props) {
-  const { selectPosition, setPostImage } = props;
+function PhotoSelector({ selectPosition, setPostImage }) {
   const [image, setImage] = useState('');
-  const [user, setUser] = useState(null);
-  const [message, setMessage] = useState(null); // State for message (error or success)
-  const history = useNavigate();
+  const [message, setMessage] = useState(null);
 
-  useEffect(() => {
-    try {
-      const userInfo = getUserFromToken();
-      setUser(userInfo);
-    } catch (error) {
-      history('/login.html');
-    }
-  }, []);
-
-  // TODO: when location is changed, image doesn't post
-  async function convertToBase64(e) {
+  async function handleFileChange(e) {
     let file = e.target.files[0];
     if (file) {
       try {
         const base64Image = await fileToBase64(file);
         const resizedImage = await resizeBase64Image(base64Image, file.size);
         setImage(resizedImage);
-
-        // Automatically save the image and location after processing
-        saveImageToState(resizedImage);
+        // Set the image in parent component
+        setPostImage({
+          img: resizedImage,
+          text: '',
+          location: selectPosition,
+          visibility: 'public',
+          takenDate: Date.now(),
+        });
       } catch (error) {
-        setMessage({ text: 'Error processing file. Error: ' + error, type: 'error' });
+        setMessage({ text: 'Error processing file. Please try again.', type: 'error' });
         setTimeout(() => setMessage(null), 3000);
       }
     }
@@ -92,40 +80,29 @@ function PhotoSelector(props) {
 
       img.onerror = function () {
         console.error('Failed to load image.');
+        setMessage({ text: 'Failed to load image.', type: 'error' });
+        setTimeout(() => setMessage(null), 3000);
         resolve(base64Image);
       };
     });
   }
 
-  function saveImageToState(imageData = image) {
-    if (!user) {
-      setMessage({ text: 'User not authenticated.', type: 'error' });
-      setTimeout(() => setMessage(null), 3000);
-      return;
-    }
-
-    // Save the image to the parent component's state
-    setPostImage({
-      img: imageData,
-      uid: user.id,
-      text: '',
-      location: selectPosition,
-      visibility: postVisibility.PRIVATE,
-      takenDate: Date.now(),
-    });
-
-    setMessage({ text: 'Image saved successfully!', type: 'success' });
-    setTimeout(() => setMessage(null), 3000); // Hide message after 3 seconds
-  }
-
   return (
-    <div className="file-uploader">
-      <h2 className="center-h2">Upload Images</h2>
-      <input type="file" accept="image/*" onChange={convertToBase64} />
-      {image && <img src={image} alt="Preview" />}
-      <button className="save-image" onClick={saveImageToState}>
-        Save
-      </button>
+    <div className="upload-section">
+      <label className="file-input-label">
+        <input 
+          type="file" 
+          accept="image/*" 
+          onChange={handleFileChange}
+          className="file-input"
+        />
+        <span>Choose file</span>
+      </label>
+      {image && (
+        <div className="image-preview">
+          <img src={image} alt="Preview" />
+        </div>
+      )}
       {message && <PopupMessage message={message.text} type={message.type} />}
     </div>
   );
