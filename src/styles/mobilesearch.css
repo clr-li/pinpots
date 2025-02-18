@@ -1,0 +1,67 @@
+.search-box-wrapper {
+    padding: 0 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .search-form {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .search-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  .search-button {
+    background-color: #FF7F50;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .search-results-container {
+    padding: 0 1rem;
+  }
+  
+  .user-result-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .user-link {
+    color: #3B82F6;
+    font-size: 1.1rem;
+    text-decoration: none;
+  }
+  
+  .follower-count {
+    color: #6B7280;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+
+  .map-container {
+    height: 60vh; /* This ensures the map takes up 60% of the viewport height */
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .map-shrink {
+    height: 40vh; /* Smaller height when posts are shown */
+  }
+  
+  /* For the profile page */
+  .map-section {
+    height: 50vh;
+    width: 100%;
+    position: relative;
+  }

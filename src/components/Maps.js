@@ -22,9 +22,11 @@ function ResetCenterView(props) {
 
   useEffect(() => {
     if (selectPosition) {
-      map.setView(L.latLng(selectPosition?.lat, selectPosition?.lon), map.getZoom(), {
-        animate: true,
-      });
+      map.setView(
+        L.latLng(selectPosition?.lat, selectPosition?.lon || selectPosition?.lng), 
+        map.getZoom(), 
+        { animate: true }
+      );
     }
   }, [selectPosition, map]);
 
@@ -33,32 +35,42 @@ function ResetCenterView(props) {
 
 function Maps(props) {
   const { selectPosition, locations, onMarkerClick } = props;
-  const locationSelection = [selectPosition?.lat, selectPosition?.lon];
+  const locationSelection = [selectPosition?.lat, selectPosition?.lon || selectPosition?.lng];
 
   return (
-    <MapContainer center={position} zoom={8} style={{ width: '100%', height: '100%' }}>
-      <TileLayer attribution="" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {locations &&
-        locations.map((loc, index) => (
+    <div style={{ width: '100%', height: '60vh' }}> {/* Add this wrapper div */}
+      <MapContainer 
+        center={position} 
+        zoom={8} 
+        style={{ width: '100%', height: '100%' }}
+      >
+        <TileLayer 
+          attribution="" 
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" 
+        />
+        
+        {locations && locations.map((loc, index) => (
           <Marker
             key={'marker-' + index}
-            position={[loc.lat, loc.lon]}
+            position={[loc.lat, loc.lon || loc.lng]}
             icon={locIcon}
             eventHandlers={{
               click: () => onMarkerClick(loc),
             }}
           >
-            <Popup>{`${loc.name}`}</Popup>
+            <Popup>{loc.name || `Location ${index + 1}`}</Popup>
           </Marker>
         ))}
 
-      {selectPosition && (
-        <Marker position={locationSelection} icon={hereIcon}>
-          <Popup>{locationSelection}</Popup>
-        </Marker>
-      )}
-      <ResetCenterView selectPosition={selectPosition} />
-    </MapContainer>
+        {selectPosition && (
+          <Marker position={locationSelection} icon={hereIcon}>
+            <Popup>{`${locationSelection[0]}, ${locationSelection[1]}`}</Popup>
+          </Marker>
+        )}
+        
+        <ResetCenterView selectPosition={selectPosition} />
+      </MapContainer>
+    </div>
   );
 }
 

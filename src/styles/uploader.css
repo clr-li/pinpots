@@ -205,3 +205,21 @@
   height: auto;
   object-fit: cover;
 }
+
+.map-container {
+  height: 60vh; /* This ensures the map takes up 60% of the viewport height */
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.map-shrink {
+  height: 40vh; /* Smaller height when posts are shown */
+}
+
+/* For the profile page */
+.map-section {
+  height: 50vh;
+  width: 100%;
+  position: relative;
+}

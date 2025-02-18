@@ -1,0 +1,176 @@
+.map-container {
+  height: 60vh; /* This ensures the map takes up 60% of the viewport height */
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.map-shrink {
+  height: 40vh; /* Smaller height when posts are shown */
+}
+
+/* For the profile page */
+.map-section {
+  height: 50vh;
+  width: 100%;
+  position: relative;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #FF7F50; /* Coral color from your design */
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  
+  .nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .nav-btn svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .nav-btn span {
+    font-size: 0.875rem;
+  }
+  
+  /* Profile specific styles */
+  .profile-header {
+    padding: 1.5rem;
+  }
+  
+  .profile-image {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 9999px;
+    overflow: hidden;
+  }
+  
+  .action-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .action-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 0.5rem;
+    text-align: center;
+    color: #4B5563;
+    text-decoration: none;
+  }
+  
+  /* Map container styles */
+  .map-container {
+    flex: 1;
+    width: 100%;
+    position: relative;
+  }
+
+  /* mobileprofile.css */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: white;
+    padding-bottom: 70px; /* Space for the nav bar */
+  }
+  
+  .profile-header {
+    padding: 20px;
+    background-color: white;
+  }
+  
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .profile-name {
+    font-size: 24px;
+    font-weight: 500;
+    color: #000;
+  }
+  
+  .profile-username {
+    font-size: 16px;
+    color: #0066FF;
+  }
+  
+  .profile-bio {
+    font-size: 14px;
+    color: #333;
+    margin-top: 4px;
+  }
+  
+  .action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  
+  .action-button {
+    padding: 8px 16px;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #6B7280;
+    text-decoration: none;
+    text-align: center;
+    background-color: white;
+  }
+  
+  .map-section {
+    flex: 1;
+    min-height: 300px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #FF7F50;
+    padding: 12px 16px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    z-index: 10;
+  }
+  
+  .nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    gap: 4px;
+  }
+  
+  .nav-icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .nav-label {
+    font-size: 12px;
+    font-weight: 500;
+  }

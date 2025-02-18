@@ -1,13 +1,11 @@
-// Filename - search.js
+// search.js
 import React from 'react';
-import Navbar from '../components/Navbar';
-import Search from '../components/Search';
+import MobileSearch from '../components/MobileSearch';
 
 function SearchPage() {
   return (
     <React.StrictMode>
-      <Navbar></Navbar>
-      <Search />
+      <MobileSearch />
     </React.StrictMode>
   );
 }
